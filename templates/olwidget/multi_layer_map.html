@@ -1,0 +1,40 @@
+<div id="{{ id }}"></div>
+{{ layer_html|join:"" }}
+<script type="text/javascript">
+
+    Ext.require([
+        'Ext.Window', // useless in fact, since we're using ext-all.js in the example
+        'GeoExt.panel.Map',
+        'GeoExt.window.Popup'
+    ]);
+    
+    Ext.onReady(function () {
+        OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
+        {{ setup_custom_layer_types|safe }}
+        
+        var map = new olwidget.Map("{{ id }}", [
+                {{ layer_js|join:"," }}
+            ], 
+            {{ map_opts|safe }}
+        );
+        
+        var olwidget_{{ id }} = Ext.create('GeoExt.panel.Map', {
+            title: 'Visualizzazione Geografica',
+            renderTo: "{{ id }}",
+            collapsible: false,
+            border: true,
+            width: 600,
+            height: 600,
+            map:map
+        });
+
+        /*var controls = map.getControlsByClass('OpenLayers.Control.Navigation');
+
+        for(var i = 0; i < controls.length; ++i){
+            controls[i].disableZoomWheel();        
+        }*/
+    
+    });
+    
+</script>
+

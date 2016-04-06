@@ -1,0 +1,14 @@
+{% load i18n admin_urls %}
+<!--div class="pull-left">
+    {% if show_delete_link %}
+        {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+        <a class="btn btn-danger deletelink" href="{% add_preserved_filters delete_url %}">{% trans "Delete" %}</a>
+    {% endif %}
+</div-->
+<div class="pull-right">
+{% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" class="btn btn-default" name="_saveasnew" {{ onclick_attrib }}/>{% endif %}
+{% if show_save_and_mail %}<input type="submit" value="{% trans 'Istruttoria conclusa - Salva ed invia a ENTI + RT-Difesa Suolo' %}" style="white-space: normal;height:50px;width:250px;background-color:#44AD41;background-image: linear-gradient(to bottom,#44AD41 0,#44AD41 100%);color:#FFFFFF;font-weight:bold;" class="btn btn-primary default" name="_save_and_send_email" {{ onclick_attrib }}/>{% endif %}
+{% if show_save_and_no_mail %}<input type="submit" value="{% trans 'Istruttoria conclusa - Salva ed invia SOLO a RT-Difesa Suolo' %}" style="white-space: normal;height:50px;width:250px;background-color:#44AD41;background-image: linear-gradient(to bottom,#44AD41 0,#44AD41 100%);color:#FFFFFF;font-weight:bold;" class="btn btn-primary default" name="_save_and_no_send_mail" {{ onclick_attrib }}/>{% endif %}
+{% if show_save %}<input type="submit" value="{% trans 'Istruttoria non conclusa - SALVA IN BOZZA' %}" style="white-space: normal;height:50px;width:250px;background-color:#C53430;background-image: linear-gradient(to bottom,#C53430 0,#C53430 100%);color:#FFFFFF;font-weight:bold;" class="btn btn-primary default" name="_save" {{ onclick_attrib }}/>{% endif %}
+</div>
+<div class="spacer"></div>

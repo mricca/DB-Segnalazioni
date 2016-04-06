@@ -1,0 +1,18 @@
+syntax: glob
+# generic
+*.pyc
+*.swp
+*.swo
+
+# folder
+db_segnalazioni/settings.py
+documents/*
+lamma_prova/*
+media/*
+var/*
+
+# other
+pip-requirements-local.txt
+genio*/migrations
+*.ini
+*~

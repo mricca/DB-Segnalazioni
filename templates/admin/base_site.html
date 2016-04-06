@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load i18n %}{% load admin_static bootstrapped_goodies_tags %}
+
+{% block title %}{% render_with_template_if_exist "admin/admin_title.html" "" %}{{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+    <table class="table table-condensed">
+        <tr >
+            <th rowspan="2" style="border:0px"><a href="http://www.regione.toscana.it/enti-e-associazioni/ambiente/difesa-del-suolo" target="_blank" >{% load staticfiles %}<img  class="img-rounded" alt="Regione Toscana - Difesa del Suolo" src="{% static "admin/images/logoregione.png" %}" alt="Regione Toscana"></a></th>
+            <td style="border:0px"><a class="navbar-brand" href="{% url 'admin:index' %}">{% if site_header %}{{ site_header }}{% else %}{% render_with_template_if_exist "admin/admin_title.html" _('Django administration') %}{% endif %}</a></td>
+        </tr>
+    </table>
+
+
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
