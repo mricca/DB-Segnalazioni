@@ -969,7 +969,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.conclusione_istruttoria),
             smart_str(obj.nominativo_compilatore),
             smart_str(obj.email_comp),
-            smart_str(obj.Geni_civili_02_2016),
+            smart_str(obj.nuovi_geni_civili),
             smart_str(obj.priorita),
             smart_str(obj.codice_rendis),
             smart_str(obj.data_trasmissione_istruttoria),
