@@ -97,7 +97,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
           'allegato_documento_preliminare': AdminResubmitFileWidget,          
           'allegato_atto_valutazione': AdminResubmitFileWidget,          
           'allegato_atto_nomina_rup': AdminResubmitFileWidget,          
-          'elaborati_progettuali': AdminResubmitFileWidget,          
+          #'elaborati_progettuali': AdminResubmitFileWidget,          
         } 
 
     # PARTE DI CONTROLLO PER LE DATE CON CANTIRABILITA        
