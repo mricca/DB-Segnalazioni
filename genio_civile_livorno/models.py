@@ -4,6 +4,9 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator
 from django.core.exceptions import ValidationError
+from django.forms.widgets import NullBooleanSelect
+from django.utils.translation import ugettext_lazy
+
 class  CategoriaIntervento(models.Model):
     id = models.CharField(max_length=6, unique=True, blank=False, primary_key=True, editable=False)
     text = models.CharField(max_length=150)
@@ -332,14 +335,20 @@ class Intervento(gismodels.Model):
     perimetrazione_autorita_di_bacino = gismodels.BooleanField(db_column='perim_adb')
     
     # Codice pericolosita AdB - PAI. (Obbligatorio se il campo "perimetrazione_adb" == si)
-    codice_pericolosita_adb_pai = gismodels.TextField(blank=True, null=True, db_column='codice_peric', help_text='Tra PAI  e PGRA indicare la perimetrazione più aggiornata', verbose_name="Classe pericolosita PAI o PGRA")
+    codice_pericolosita_adb_pai = gismodels.TextField(blank=True, null=True, db_column='codice_peric', help_text='Classe di pericolosità PAI o Piano di Gestione RA nella situazione attuale', verbose_name="Classe pericolosita PAI o PGRA attuale")
     
     #################################
     ######## START RENDIS ###########
     #################################
     
     # Classe di rischio PAI o Piano di Gestione (RENDIS)
-    classe_rischio_pai = gismodels.TextField(blank=True, null=True, db_column='classe_risc', help_text='Tra PAI  e PGRA indicare la perimetrazione più aggiornata', verbose_name='Classe rischio PAI o PGRA')
+    classe_rischio_pai = gismodels.TextField(blank=True, null=True, db_column='classe_risc', help_text='Classe di rischio PAI o Piano di Gestione RA nella situazione attuale', verbose_name='Classe rischio PAI o PGRA attuale')
+
+    # perimetrazione_pericolosita_attuale 
+    perimetrazione_pericolosita_attuale  = gismodels.FileField(upload_to='documents/perim_peric_attuale/%Y/%m/%d',null=True, blank=True, db_column='perim_peric_attuale', help_text='caricare lo shape file della classe di pericolosità PAI o Piano di Gestione RA prima della realizzazione dell\'intervento')
+
+    # perimetrazione_pericolosita_post_intervento
+    perimetrazione_pericolosita_post_intervento = gismodels.FileField(upload_to='documents/perim_peric_post/%Y/%m/%d',null=True, blank=True, db_column='perim_peric_post', help_text='caricare lo shape file della classe di pericolosità PAI o Piano di Gestione RA dopo la realizzazione dell\'intervento')
     
     #Stima persone a rischio diretto nella situazione attuale
     stima_rischio_diretto_attuale = gismodels.PositiveIntegerField(verbose_name="Stima persone a rischio diretto nella situazione attuale", null=True, blank=True, db_column='stima_ris_dir_at', validators=[MaxValueValidator(99999)])
@@ -457,14 +466,9 @@ class Intervento(gismodels.Model):
     fine_lavori = gismodels.DateField(null=True, blank=True)    
 
     # Elaborati progettuali (SOLO SE STUDIO)
-    elaborati_progettuali = gismodels.FileField(verbose_name="Elaborati progettuali (.. in file compresso)", null=True, upload_to='documents/elaborati_prog/%Y/%m/%d',blank=True, db_column='elaborati_prog', help_text="<b>Gli elaborati progettuali sono da intendersi quelli  di cui all’art.93 del D.lgs 163/2006 e artt. Da 14 a 43 del DPR 207/2010 e s.m.i.<BR/>"
-        "Laddove gli elaborati progettuali inseriti non siano perfettamente conformi all'elencazione di cui sopra, il contenuto di progetto si può comunque considerare 'adeguato' quando, dall'esame degli elaborati progettuali stessi, si può constatare la effettiva compresenza di tutti i seguenti contenuti:"
-        "<ul><li> atti che possano essere qualificati alla stregua di elaborati tecnici ai sensi del Codice dei contratti pubblici relativi a lavori, servizi e forniture in attuazione delle direttive 2004/17/CE e 2004/18/CE, di cui al decreto legislativo 12 aprile 2006, n. 163 e successive modificazioni;</li>"
-        "<li> elaborati tecnici da cui risulti che si tratta di area perimetrata o ritenuta critica;</li>"
-        "<li> individuazione di tipologia ed ubicazione del dissesto;</li>"
-        "<li> individuazione di caratteristiche ed ubicazione delle opere;</li>"
-        "<li> relazione funzionale tra opere proposte ed individuate e dissesto nonché, ove necessario, con i fenomeni di degrado degli ecosistemi fluviali e degli habitat ripariali;</li>"
-        "<li> percentuale di opere accessorie. Si intendono 'accessorie' le opere che, sebbene collegate all’intervento principale, conservino una popria autonoma funzionalità e una necessaria strumentalità con l’intervento di mitigazione del rischio idrogeologico da finanziare</b></li></ul>")
+    elaborati_progettuali = gismodels.FileField(verbose_name="Elaborati progettuali (.. in file compresso)", null=True, upload_to='documents/elaborati_prog/%Y/%m/%d',blank=True, db_column='elaborati_prog', help_text="<b>Nel caso di PROGETTO DEFINITIVO caricare gli elaborati progettuali comprensivi di:<ul><li>Elenco elaborati,</li><li>Verbale di Verifica</li></ul> Nel caso di PROGETTO ESECUTIVO caricare gli elaborati progettuali comprensivi di:<ul><li>Elenco elaborati,</li><li>Verbale di Verifica,</li><li>Verbale di validazione,</li><li>Atti gara (lettera di invito e/o bando e disciplinare di gara).</li></ul></b>")
+    
+    descrizione_elaborati_prog = gismodels.TextField(blank=True, null=True, db_column='desc_elab_prog', verbose_name='Descrizione Elaborati Progettuali')
     
     # RELAZIONI IN CASO DI STUDIO
     
@@ -635,7 +639,7 @@ class Intervento(gismodels.Model):
     #finanziato_anche_in_parte = gismodels.NullBooleanField(blank=True, db_column='fin_parte')
     
     # A finanziamento
-    a_finanziamento = gismodels.NullBooleanField(blank=True, db_column='a_finanz')
+    #a_finanziamento = gismodels.NullBooleanField(blank=True, db_column='a_finanz')
     #nuovi_geni_civili = models.CharField(blank=True, null=True, max_length=255, db_column='gen_civ_new')
 
     def clean(self):

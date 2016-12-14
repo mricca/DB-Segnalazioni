@@ -360,6 +360,7 @@
             //$('.field-fine_lavori').css('display','inline');
             
             $('.field-elaborati_progettuali').css('display','inline');
+            $('.field-descrizione_elaborati_prog').css('display','inline');
             
             //CAMPI RENDIS SOLAMENTE IN INTERVENTO (INFORMAZIONI GENERALI INTERVENTO/PROGETTI/STUDI)
             $('.field-classe_rischio_pai').css('display','inline');
@@ -480,6 +481,7 @@
             $('.field-fine_lavori').css('display','none');
             
             $('.field-elaborati_progettuali').css('display','none');
+            $('.field-descrizione_elaborati_prog').css('display','none');
 
             //CAMPI RENDIS SOLAMENTE IN INTERVENTO (INFORMAZIONI GENERALI INTERVENTO/PROGETTI/STUDI)
             $('.field-classe_rischio_pai').css('display','none');
@@ -608,6 +610,7 @@
                 //$('.field-fine_lavori').css('display','inline');
                 
                 $('.field-elaborati_progettuali').css('display','inline');
+                $('.field-descrizione_elaborati_prog').css('display','inline');
 
                 //CAMPI RENDIS SOLAMENTE IN INTERVENTO (INFORMAZIONI GENERALI INTERVENTO/PROGETTI/STUDI)
                 $('.field-classe_rischio_pai').css('display','inline');
@@ -748,6 +751,7 @@
                 $('.field-fine_lavori').css('display','none');
                 
                 $('.field-elaborati_progettuali').css('display','none');
+                $('.field-descrizione_elaborati_prog').css('display','none');
 
                 //CAMPI RENDIS SOLAMENTE IN INTERVENTO (INFORMAZIONI GENERALI INTERVENTO/PROGETTI/STUDI)
                 $('.field-classe_rischio_pai').css('display','none');

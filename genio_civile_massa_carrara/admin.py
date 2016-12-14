@@ -237,6 +237,15 @@ class CronoprogrammaAdminForm(forms.ModelForm):
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Devi inserire gli Elaborati Progettuali!")
         return elaborati_progettuali  
         
+    def clean_descrizione_elaborati_prog(self):
+        descrizione_elaborati_prog = self.cleaned_data['descrizione_elaborati_prog']
+        studio_intervento = self.cleaned_data['studio_intervento'].text
+        strip_text = descrizione_elaborati_prog.strip()
+        if studio_intervento == 'INTERVENTO':
+            if strip_text == "":
+                raise forms.ValidationError("Hai selezionato INTERVENTO. Devi inserire l'elenco degli Elaborati Progettuali!")
+        return descrizione_elaborati_prog
+        
     def clean_elenco_pareri(self):
         elenco_pareri = self.cleaned_data['elenco_pareri'].strip()
         studio_intervento = self.cleaned_data['studio_intervento'].text
@@ -452,106 +461,109 @@ def export_pdf_single(modeladmin, request, queryset, cod = None):
 
     for obj in queryset:
         if obj.codice_intervento == cod:
-            allproducts.append([smart_str(u"codice_intervento"),Paragraph(smart_str(obj.codice_intervento),style)])
-            allproducts.append([smart_str(u"bacino_idrografico"),Paragraph(smart_str(obj.bacino_idrografico),style)])
-            allproducts.append([smart_str(u"comprensorio"),Paragraph(smart_str(obj.comprensorio),style)])
-            allproducts.append([smart_str(u"provincia"),Paragraph(smart_str(obj.provincia),style)])
-            allproducts.append([smart_str(u"comune"),Paragraph(smart_str(obj.comune),style)])
-            allproducts.append([smart_str(u"localita"),Paragraph(smart_str(obj.localita),style)])
-            allproducts.append([smart_str(u"corso_acqua"),Paragraph(smart_str(obj.corso_acqua),style)])
-            allproducts.append([smart_str(u"reticolo_gestione"),Paragraph(smart_str(obj.reticolo_gestione),style)])
-            allproducts.append([smart_str(u"geometria"),Paragraph(smart_str(obj.fenomeno_aggiunto),style)])
-            allproducts.append([smart_str(u"fenomeno"),Paragraph(smart_str(obj.fenomeno),style)])
-            allproducts.append([smart_str(u"studio_intervento"),Paragraph(smart_str(obj.studio_intervento),style)])
-            allproducts.append([smart_str(u"tipologia_intervento"),Paragraph(smart_str(obj.tipologia_intervento),style)])
-            allproducts.append([smart_str(u"tipo_di_opera"),Paragraph(smart_str(obj.tipo_di_opera),style)])
-            allproducts.append([smart_str(u"cat_int"),Paragraph(smart_str(obj.cat_int),style)])
-            allproducts.append([smart_str(u"area_vasta_rif"),Paragraph(smart_str(obj.area_vasta_rif),style)])
-            allproducts.append([smart_str(u"titolo_intervento_studio"),Paragraph(smart_str(obj.titolo_intervento_studio),style)])
-            allproducts.append([smart_str(u"descrizione_sintetica_intervento_studio"),Paragraph(smart_str(obj.descrizione_sintetica_intervento_studio),style)])
-            allproducts.append([smart_str(u"categoria_idr_opera"),Paragraph(smart_str(obj.categoria_idr_opera),style)])
-            allproducts.append([smart_str(u"perimetrazione_autorita_di_bacino"),Paragraph(smart_str(obj.perimetrazione_autorita_di_bacino),style)])
-            allproducts.append([smart_str(u"Classe pericolosita PAI o PGRA"),Paragraph(smart_str(obj.codice_pericolosita_adb_pai),style)])
-            allproducts.append([smart_str(u"Classe rischio PAI o PGRA"),Paragraph(smart_str(obj.classe_rischio_pai),style)])
-            allproducts.append([smart_str(u"stima_rischio_diretto_attuale"),Paragraph(smart_str(obj.stima_rischio_diretto_attuale),style)])
-            allproducts.append([smart_str(u"stima_rischio_indiretto_attuale"),Paragraph(smart_str(obj.stima_rischio_indiretto_attuale),style)])
-            allproducts.append([smart_str(u"stima_rischio_diretto_intervento"),Paragraph(smart_str(obj.stima_rischio_diretto_intervento),style)])
-            allproducts.append([smart_str(u"stima_rischio_indiretto_intervento"),Paragraph(smart_str(obj.stima_rischio_indiretto_intervento),style)])
-            allproducts.append([smart_str(u"ente_proponente"),Paragraph(smart_str(obj.ente_proponente),style)])
-            allproducts.append([smart_str(u"ente_attuatore_competente"),Paragraph(smart_str(obj.ente_attuatore_competente),style)])
-            allproducts.append([smart_str(u"nominativo"),Paragraph(smart_str(obj.nominativo),style)])
-            allproducts.append([smart_str(u"email"),Paragraph(smart_str(obj.email),style)])
-            allproducts.append([smart_str(u"recapito_telefonico"),Paragraph(smart_str(obj.recapito_telefonico),style)])            
-            allproducts.append([smart_str(u"interventi_correlati"),Paragraph(smart_str(obj.interventi_correlati),style)])
-            allproducts.append([smart_str(u"stralcio_funzionale"),Paragraph(smart_str(obj.stralcio_funzionale),style)])
-            allproducts.append([smart_str(u"accordo_di_programma"),Paragraph(smart_str(obj.accordo_di_programma),style)])
-            allproducts.append([smart_str(u"note"),Paragraph(smart_str(obj.note),style)])
-            allproducts.append([smart_str(u"progetto_preliminare"),Paragraph(smart_str(obj.progetto_preliminare),style)])
-            allproducts.append([smart_str(u"mesi_approvazione_progetto_preliminare"),Paragraph(smart_str(obj.mesi_approvazione_progetto_preliminare),style)])
-            allproducts.append([smart_str(u"data_approvazione_progetto_preliminare"),Paragraph(smart_str(obj.data_approvazione_progetto_preliminare),style)])
-            allproducts.append([smart_str(u"riferimento_determina_approvazione_pp"),Paragraph(smart_str(obj.riferimento_determina_approvazione_pp),style)])
-            allproducts.append([smart_str(u"allegato_determina_approvazione_pp"),Paragraph(smart_str(obj.allegato_determina_approvazione_pp),style)])
-            allproducts.append([smart_str(u"progetto_definitivo"),Paragraph(smart_str(obj.progetto_definitivo),style)])
-            allproducts.append([smart_str(u"mesi_approvazione_progetto_definitivo"),Paragraph(smart_str(obj.mesi_approvazione_progetto_definitivo),style)])
-            allproducts.append([smart_str(u"data_approvazione_progetto_definitivo"),Paragraph(smart_str(obj.data_approvazione_progetto_definitivo),style)])
-            allproducts.append([smart_str(u"riferimento_determina_approvazione_pd"),Paragraph(smart_str(obj.riferimento_determina_approvazione_pd),style)])
-            allproducts.append([smart_str(u"allegato_determina_approvazione_pd"),Paragraph(smart_str(obj.allegato_determina_approvazione_pd),style)])
-            allproducts.append([smart_str(u"mesi_approvazione_progetto_esecutivo"),Paragraph(smart_str(obj.mesi_approvazione_progetto_esecutivo),style)])
-            allproducts.append([smart_str(u"data_approvazione_progetto_esecutivo"),Paragraph(smart_str(obj.data_approvazione_progetto_esecutivo),style)])
-            allproducts.append([smart_str(u"riferimento_determina_approvazione_pe"),Paragraph(smart_str(obj.riferimento_determina_approvazione_pe),style)])
-            allproducts.append([smart_str(u"allegato_determina_approvazione_pe"),Paragraph(smart_str(obj.allegato_determina_approvazione_pe),style)])
-            allproducts.append([smart_str(u"mesi_inizio_lavori"),Paragraph(smart_str(obj.mesi_inizio_lavori),style)])
-            allproducts.append([smart_str(u"inizio_lavori"),Paragraph(smart_str(obj.inizio_lavori),style)])
-            allproducts.append([smart_str(u"mesi_fine_lavori"),Paragraph(smart_str(obj.mesi_fine_lavori),style)])
-            allproducts.append([smart_str(u"fine_lavori"),Paragraph(smart_str(obj.fine_lavori),style)])
-            allproducts.append([smart_str(u"elaborati_progettuali"),Paragraph(smart_str(obj.elaborati_progettuali),style)])
-            allproducts.append([smart_str(u"allegato_documento_preliminare"),Paragraph(smart_str(obj.allegato_documento_preliminare),style)])
-            allproducts.append([smart_str(u"conclusione_relazione_finale"),Paragraph(smart_str(obj.conclusione_relazione_finale),style)])
-            allproducts.append([smart_str(u"mesi_conclusione_relazione_finale"),Paragraph(smart_str(obj.mesi_conclusione_relazione_finale),style)])
-            allproducts.append([smart_str(u"elenco_pareri"),Paragraph(smart_str(obj.elenco_pareri),style)])
-            allproducts.append([smart_str(u"atto_valutazione"),Paragraph(smart_str(obj.atto_valutazione),style)])
-            allproducts.append([smart_str(u"allegato_atto_valutazione"),Paragraph(smart_str(obj.allegato_atto_valutazione),style)])
-            allproducts.append([smart_str(u"codice_unico_progetto"),Paragraph(smart_str(obj.codice_unico_progetto),style)])
-            allproducts.append([smart_str(u"atto_nomina_rup"),Paragraph(smart_str(obj.atto_nomina_rup),style)])
-            allproducts.append([smart_str(u"allegato_atto_nomina_rup"),Paragraph(smart_str(obj.allegato_atto_nomina_rup),style)])
-            allproducts.append([smart_str(u"intervento_opere_accessorie"),Paragraph(smart_str(obj.intervento_opere_accessorie),style)])
-            allproducts.append([smart_str(u"presenza_vincoli_sovraordinati"),Paragraph(smart_str(obj.presenza_vincoli_sovraordinati),style)])
-            allproducts.append([smart_str(u"desc_opere_acc_strum"),Paragraph(smart_str(obj.desc_opere_acc_strum),style)])
-            allproducts.append([smart_str(u"importo_opere_accessorie_strumentali"),Paragraph(smart_str(obj.importo_opere_accessorie_strumentali),style)])
-            allproducts.append([smart_str(u"desc_opere_acc_no_strum"),Paragraph(smart_str(obj.desc_opere_acc_no_strum),style)])
-            allproducts.append([smart_str(u"importo_opere_accessorie_no_strumentali"),Paragraph(smart_str(obj.importo_opere_accessorie_no_strumentali),style)])
-            allproducts.append([smart_str(u"intervento_opere_mitigazione_compensazione"),Paragraph(smart_str(obj.intervento_opere_mitigazione_compensazione),style)])
-            allproducts.append([smart_str(u"desc_int_opere_mitig_comp"),Paragraph(smart_str(obj.desc_int_opere_mitig_comp),style)])
-            allproducts.append([smart_str(u"importo_opere_mitig_comp"),Paragraph(smart_str(obj.importo_opere_mitig_comp),style)])
-            allproducts.append([smart_str(u"importo_totale_intervento"),Paragraph(smart_str(obj.importo_totale_intervento),style)])
-            allproducts.append([smart_str(u"importo_richiesto"),Paragraph(smart_str(obj.importo_richiesto),style)])
-            allproducts.append([smart_str(u"importo_cofinanziato_altri"),Paragraph(smart_str(obj.importo_cofinanziato_altri),style)])
-            allproducts.append([smart_str(u"ente_cofinanziatore"),Paragraph(smart_str(obj.ente_cofinanziatore),style)])            
-            allproducts.append([smart_str(u"efficacia"),Paragraph(smart_str(obj.efficacia),style)])
-            allproducts.append([smart_str(u"efficacia_val"),Paragraph(smart_str(obj.efficacia_val),style)])
-            allproducts.append([smart_str(u"cantierabilita"),Paragraph(smart_str(obj.cantierabilita),style)])
-            allproducts.append([smart_str(u"cantierabilita_val"),Paragraph(smart_str(obj.cantierabilita_val),style)])
-            allproducts.append([smart_str(u"variante_urbanistica"),Paragraph(smart_str(obj.variante_urbanistica),style)])
-            allproducts.append([smart_str(u"variante_urbanistica_val"),Paragraph(smart_str(obj.variante_urbanistica_val),style)])
-            allproducts.append([smart_str(u"valutazione_impatto_ambientale"),Paragraph(smart_str(obj.valutazione_impatto_ambientale),style)])
-            allproducts.append([smart_str(u"valutazione_impatto_ambientale_val"),Paragraph(smart_str(obj.valutazione_impatto_ambientale_val),style)])
-            allproducts.append([smart_str(u"esproprio"),Paragraph(smart_str(obj.esproprio),style)])
-            allproducts.append([smart_str(u"esproprio_val"),Paragraph(smart_str(obj.esproprio_val),style)])
-            allproducts.append([smart_str(u"sostenibilita"),Paragraph(smart_str(obj.sostenibilita),style)])
-            allproducts.append([smart_str(u"sostenibilita_val"),Paragraph(smart_str(obj.sostenibilita_val),style)])
-            allproducts.append([smart_str(u"Punteggio provvisoriamente assegnato"),Paragraph(smart_str(obj.totale),style)])
-            allproducts.append([smart_str(u"conclusione_istruttoria"),Paragraph(smart_str(obj.conclusione_istruttoria),style)])
-            allproducts.append([smart_str(u"nominativo_compilatore"),Paragraph(smart_str(obj.nominativo_compilatore),style)])
-            allproducts.append([smart_str(u"email_comp"),Paragraph(smart_str(obj.email_comp),style)])
-            allproducts.append([smart_str(u"Geni_civili_02_2016"),Paragraph(smart_str(obj.nuovi_geni_civili),style)])
-            allproducts.append([smart_str(u"priorita"),Paragraph(smart_str(obj.priorita),style)])
-            allproducts.append([smart_str(u"codice_rendis"),Paragraph(smart_str(obj.codice_rendis),style)])
-            allproducts.append([smart_str(u"data_trasmissione_istruttoria"),Paragraph(smart_str(obj.data_trasmissione_istruttoria),style)])
+            allproducts.append([Paragraph(smart_str(u"codice_intervento"),style),Paragraph(smart_str(obj.codice_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"bacino_idrografico"),style),Paragraph(smart_str(obj.bacino_idrografico),style)])
+            allproducts.append([Paragraph(smart_str(u"comprensorio"),style),Paragraph(smart_str(obj.comprensorio),style)])
+            allproducts.append([Paragraph(smart_str(u"provincia"),style),Paragraph(smart_str(obj.provincia),style)])
+            allproducts.append([Paragraph(smart_str(u"comune"),style),Paragraph(smart_str(obj.comune),style)])
+            allproducts.append([Paragraph(smart_str(u"localita"),style),Paragraph(smart_str(obj.localita),style)])
+            allproducts.append([Paragraph(smart_str(u"corso_acqua"),style),Paragraph(smart_str(obj.corso_acqua),style)])
+            allproducts.append([Paragraph(smart_str(u"reticolo_gestione"),style),Paragraph(smart_str(obj.reticolo_gestione),style)])
+            allproducts.append([Paragraph(smart_str(u"geometria"),style),Paragraph(smart_str(obj.fenomeno_aggiunto),style)])
+            allproducts.append([Paragraph(smart_str(u"fenomeno"),style),Paragraph(smart_str(obj.fenomeno),style)])
+            allproducts.append([Paragraph(smart_str(u"studio_intervento"),style),Paragraph(smart_str(obj.studio_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"tipologia_intervento"),style),Paragraph(smart_str(obj.tipologia_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"tipo_di_opera"),style),Paragraph(smart_str(obj.tipo_di_opera),style)])
+            allproducts.append([Paragraph(smart_str(u"cat_int"),style),Paragraph(smart_str(obj.cat_int),style)])
+            allproducts.append([Paragraph(smart_str(u"area_vasta_rif"),style),Paragraph(smart_str(obj.area_vasta_rif),style)])
+            allproducts.append([Paragraph(smart_str(u"titolo_intervento_studio"),style),Paragraph(smart_str(obj.titolo_intervento_studio),style)])
+            allproducts.append([Paragraph(smart_str(u"descrizione_sintetica_intervento_studio"),style),Paragraph(smart_str(obj.descrizione_sintetica_intervento_studio),style)])
+            allproducts.append([Paragraph(smart_str(u"categoria_idr_opera"),style),Paragraph(smart_str(obj.categoria_idr_opera),style)])
+            allproducts.append([Paragraph(smart_str(u"perimetrazione_autorita_di_bacino"),style),Paragraph(smart_str(obj.perimetrazione_autorita_di_bacino),style)])
+            allproducts.append([Paragraph(smart_str(u"Classe pericolosita PAI o PGRA attuale"),style),Paragraph(smart_str(obj.codice_pericolosita_adb_pai),style)])
+            allproducts.append([Paragraph(smart_str(u"Classe rischio PAI o PGRA attuale"),style),Paragraph(smart_str(obj.classe_rischio_pai),style)])
+            allproducts.append([Paragraph(smart_str(u"perimetrazione_pericolosita_attuale"),style),Paragraph(smart_str(obj.perimetrazione_pericolosita_attuale),style)])
+            allproducts.append([Paragraph(smart_str(u"perimetrazione_pericolosita_post_intervento"),style),Paragraph(smart_str(obj.perimetrazione_pericolosita_post_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"stima_rischio_diretto_attuale"),style),Paragraph(smart_str(obj.stima_rischio_diretto_attuale),style)])
+            allproducts.append([Paragraph(smart_str(u"stima_rischio_indiretto_attuale"),style),Paragraph(smart_str(obj.stima_rischio_indiretto_attuale),style)])
+            allproducts.append([Paragraph(smart_str(u"stima_rischio_diretto_intervento"),style),Paragraph(smart_str(obj.stima_rischio_diretto_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"stima_rischio_indiretto_intervento"),style),Paragraph(smart_str(obj.stima_rischio_indiretto_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"ente_proponente"),style),Paragraph(smart_str(obj.ente_proponente),style)])
+            allproducts.append([Paragraph(smart_str(u"ente_attuatore_competente"),style),Paragraph(smart_str(obj.ente_attuatore_competente),style)])
+            allproducts.append([Paragraph(smart_str(u"nominativo"),style),Paragraph(smart_str(obj.nominativo),style)])
+            allproducts.append([Paragraph(smart_str(u"email"),style),Paragraph(smart_str(obj.email),style)])
+            allproducts.append([Paragraph(smart_str(u"recapito_telefonico"),style),Paragraph(smart_str(obj.recapito_telefonico),style)])            
+            allproducts.append([Paragraph(smart_str(u"interventi_correlati"),style),Paragraph(smart_str(obj.interventi_correlati),style)])
+            allproducts.append([Paragraph(smart_str(u"stralcio_funzionale"),style),Paragraph(smart_str(obj.stralcio_funzionale),style)])
+            allproducts.append([Paragraph(smart_str(u"accordo_di_programma"),style),Paragraph(smart_str(obj.accordo_di_programma),style)])
+            allproducts.append([Paragraph(smart_str(u"note"),style),Paragraph(smart_str(obj.note),style)])
+            allproducts.append([Paragraph(smart_str(u"progetto_preliminare"),style),Paragraph(smart_str(obj.progetto_preliminare),style)])
+            allproducts.append([Paragraph(smart_str(u"mesi_approvazione_progetto_preliminare"),style),Paragraph(smart_str(obj.mesi_approvazione_progetto_preliminare),style)])
+            allproducts.append([Paragraph(smart_str(u"data_approvazione_progetto_preliminare"),style),Paragraph(smart_str(obj.data_approvazione_progetto_preliminare),style)])
+            allproducts.append([Paragraph(smart_str(u"riferimento_determina_approvazione_pp"),style),Paragraph(smart_str(obj.riferimento_determina_approvazione_pp),style)])
+            allproducts.append([Paragraph(smart_str(u"allegato_determina_approvazione_pp"),style),Paragraph(smart_str(obj.allegato_determina_approvazione_pp),style)])
+            allproducts.append([Paragraph(smart_str(u"progetto_definitivo"),style),Paragraph(smart_str(obj.progetto_definitivo),style)])
+            allproducts.append([Paragraph(smart_str(u"mesi_approvazione_progetto_definitivo"),style),Paragraph(smart_str(obj.mesi_approvazione_progetto_definitivo),style)])
+            allproducts.append([Paragraph(smart_str(u"data_approvazione_progetto_definitivo"),style),Paragraph(smart_str(obj.data_approvazione_progetto_definitivo),style)])
+            allproducts.append([Paragraph(smart_str(u"riferimento_determina_approvazione_pd"),style),Paragraph(smart_str(obj.riferimento_determina_approvazione_pd),style)])
+            allproducts.append([Paragraph(smart_str(u"allegato_determina_approvazione_pd"),style),Paragraph(smart_str(obj.allegato_determina_approvazione_pd),style)])
+            allproducts.append([Paragraph(smart_str(u"mesi_approvazione_progetto_esecutivo"),style),Paragraph(smart_str(obj.mesi_approvazione_progetto_esecutivo),style)])
+            allproducts.append([Paragraph(smart_str(u"data_approvazione_progetto_esecutivo"),style),Paragraph(smart_str(obj.data_approvazione_progetto_esecutivo),style)])
+            allproducts.append([Paragraph(smart_str(u"riferimento_determina_approvazione_pe"),style),Paragraph(smart_str(obj.riferimento_determina_approvazione_pe),style)])
+            allproducts.append([Paragraph(smart_str(u"allegato_determina_approvazione_pe"),style),Paragraph(smart_str(obj.allegato_determina_approvazione_pe),style)])
+            allproducts.append([Paragraph(smart_str(u"mesi_inizio_lavori"),style),Paragraph(smart_str(obj.mesi_inizio_lavori),style)])
+            allproducts.append([Paragraph(smart_str(u"inizio_lavori"),style),Paragraph(smart_str(obj.inizio_lavori),style)])
+            allproducts.append([Paragraph(smart_str(u"mesi_fine_lavori"),style),Paragraph(smart_str(obj.mesi_fine_lavori),style)])
+            allproducts.append([Paragraph(smart_str(u"fine_lavori"),style),Paragraph(smart_str(obj.fine_lavori),style)])
+            allproducts.append([Paragraph(smart_str(u"elaborati_progettuali"),style),Paragraph(smart_str(obj.elaborati_progettuali),style)])
+            allproducts.append([Paragraph(smart_str(u"descrizione_elaborati_prog"),style),Paragraph(smart_str(obj.descrizione_elaborati_prog),style)])
+            allproducts.append([Paragraph(smart_str(u"allegato_documento_preliminare"),style),Paragraph(smart_str(obj.allegato_documento_preliminare),style)])
+            allproducts.append([Paragraph(smart_str(u"conclusione_relazione_finale"),style),Paragraph(smart_str(obj.conclusione_relazione_finale),style)])
+            allproducts.append([Paragraph(smart_str(u"mesi_conclusione_relazione_finale"),style),Paragraph(smart_str(obj.mesi_conclusione_relazione_finale),style)])
+            allproducts.append([Paragraph(smart_str(u"elenco_pareri"),style),Paragraph(smart_str(obj.elenco_pareri),style)])
+            allproducts.append([Paragraph(smart_str(u"atto_valutazione"),style),Paragraph(smart_str(obj.atto_valutazione),style)])
+            allproducts.append([Paragraph(smart_str(u"allegato_atto_valutazione"),style),Paragraph(smart_str(obj.allegato_atto_valutazione),style)])
+            allproducts.append([Paragraph(smart_str(u"codice_unico_progetto"),style),Paragraph(smart_str(obj.codice_unico_progetto),style)])
+            allproducts.append([Paragraph(smart_str(u"atto_nomina_rup"),style),Paragraph(smart_str(obj.atto_nomina_rup),style)])
+            allproducts.append([Paragraph(smart_str(u"allegato_atto_nomina_rup"),style),Paragraph(smart_str(obj.allegato_atto_nomina_rup),style)])
+            allproducts.append([Paragraph(smart_str(u"intervento_opere_accessorie"),style),Paragraph(smart_str(obj.intervento_opere_accessorie),style)])
+            allproducts.append([Paragraph(smart_str(u"presenza_vincoli_sovraordinati"),style),Paragraph(smart_str(obj.presenza_vincoli_sovraordinati),style)])
+            allproducts.append([Paragraph(smart_str(u"desc_opere_acc_strum"),style),Paragraph(smart_str(obj.desc_opere_acc_strum),style)])
+            allproducts.append([Paragraph(smart_str(u"importo_opere_accessorie_strumentali"),style),Paragraph(smart_str(obj.importo_opere_accessorie_strumentali),style)])
+            allproducts.append([Paragraph(smart_str(u"desc_opere_acc_no_strum"),style),Paragraph(smart_str(obj.desc_opere_acc_no_strum),style)])
+            allproducts.append([Paragraph(smart_str(u"importo_opere_accessorie_no_strumentali"),style),Paragraph(smart_str(obj.importo_opere_accessorie_no_strumentali),style)])
+            allproducts.append([Paragraph(smart_str(u"intervento_opere_mitigazione_compensazione"),style),Paragraph(smart_str(obj.intervento_opere_mitigazione_compensazione),style)])
+            allproducts.append([Paragraph(smart_str(u"desc_int_opere_mitig_comp"),style),Paragraph(smart_str(obj.desc_int_opere_mitig_comp),style)])
+            allproducts.append([Paragraph(smart_str(u"importo_opere_mitig_comp"),style),Paragraph(smart_str(obj.importo_opere_mitig_comp),style)])
+            allproducts.append([Paragraph(smart_str(u"importo_totale_intervento"),style),Paragraph(smart_str(obj.importo_totale_intervento),style)])
+            allproducts.append([Paragraph(smart_str(u"importo_richiesto"),style),Paragraph(smart_str(obj.importo_richiesto),style)])
+            allproducts.append([Paragraph(smart_str(u"importo_cofinanziato_altri"),style),Paragraph(smart_str(obj.importo_cofinanziato_altri),style)])
+            allproducts.append([Paragraph(smart_str(u"ente_cofinanziatore"),style),Paragraph(smart_str(obj.ente_cofinanziatore),style)])            
+            allproducts.append([Paragraph(smart_str(u"efficacia"),style),Paragraph(smart_str(obj.efficacia),style)])
+            #allproducts.append([Paragraph(smart_str(u"efficacia_val"),style),Paragraph(smart_str(obj.efficacia_val),style)])
+            allproducts.append([Paragraph(smart_str(u"cantierabilita"),style),Paragraph(smart_str(obj.cantierabilita),style)])
+            #allproducts.append([Paragraph(smart_str(u"cantierabilita_val"),style),Paragraph(smart_str(obj.cantierabilita_val),style)])
+            allproducts.append([Paragraph(smart_str(u"variante_urbanistica"),style),Paragraph(smart_str(obj.variante_urbanistica),style)])
+            #allproducts.append([Paragraph(smart_str(u"variante_urbanistica_val"),style),Paragraph(smart_str(obj.variante_urbanistica_val),style)])
+            allproducts.append([Paragraph(smart_str(u"valutazione_impatto_ambientale"),style),Paragraph(smart_str(obj.valutazione_impatto_ambientale),style)])
+            #allproducts.append([Paragraph(smart_str(u"valutazione_impatto_ambientale_val"),style),Paragraph(smart_str(obj.valutazione_impatto_ambientale_val),style)])
+            allproducts.append([Paragraph(smart_str(u"esproprio"),style),Paragraph(smart_str(obj.esproprio),style)])
+            #allproducts.append([Paragraph(smart_str(u"esproprio_val"),style),Paragraph(smart_str(obj.esproprio_val),style)])
+            allproducts.append([Paragraph(smart_str(u"sostenibilita"),style),Paragraph(smart_str(obj.sostenibilita),style)])
+            #allproducts.append([Paragraph(smart_str(u"sostenibilita_val"),style),Paragraph(smart_str(obj.sostenibilita_val),style)])
+            #allproducts.append([Paragraph(smart_str(u"Punteggio provvisoriamente assegnato"),style),Paragraph(smart_str(obj.totale),style)])
+            allproducts.append([Paragraph(smart_str(u"conclusione_istruttoria"),style),Paragraph(smart_str(obj.conclusione_istruttoria),style)])
+            allproducts.append([Paragraph(smart_str(u"nominativo_compilatore"),style),Paragraph(smart_str(obj.nominativo_compilatore),style)])
+            allproducts.append([Paragraph(smart_str(u"email_comp"),style),Paragraph(smart_str(obj.email_comp),style)])
+            allproducts.append([Paragraph(smart_str(u"Geni_civili_02_2016"),style),Paragraph(smart_str(obj.nuovi_geni_civili),style)])
+            allproducts.append([Paragraph(smart_str(u"priorita"),style),Paragraph(smart_str(obj.priorita),style)])
+            allproducts.append([Paragraph(smart_str(u"codice_rendis"),style),Paragraph(smart_str(obj.codice_rendis),style)])
+            allproducts.append([Paragraph(smart_str(u"data_trasmissione_istruttoria"),style),Paragraph(smart_str(obj.data_trasmissione_istruttoria),style)])
             
-            if request.user.is_superuser:
-                allproducts.append([smart_str(u"a_finanziamento"),Paragraph(smart_str(obj.a_finanziamento),style)])
+            #if request.user.is_superuser:
+                #allproducts.append([smart_str(u"a_finanziamento"),Paragraph(smart_str(obj.a_finanziamento),style)])
 
-    t = Table([headings] + allproducts,[230,250])
+    t = Table([headings] + allproducts,[150,350])
     t.setStyle(TableStyle([('GRID', (0,0), (1,-1), 2, colors.black),('LINEBELOW', (0,0), (-1,0), 2, colors.red),('BACKGROUND', (0, 0), (-1, 0), colors.pink)]))
     Catalog.append(t)
     p.build(Catalog)
@@ -608,106 +620,109 @@ def export_pdf(modeladmin, request, queryset):
         
         #WMSP = Paragraph('''<para align=center spaceb=3>The <b>ReportLab Left<font color=red>Logo</font></b>WMS</para>''', style)
         
-        allproducts.append([smart_str(u"Codice intervento"),Paragraph(smart_str(obj.codice_intervento),style)])
-        allproducts.append([smart_str(u"Bacino Idrografico"),Paragraph(smart_str(obj.bacino_idrografico),style)])
-        allproducts.append([smart_str(u"Comprensorio"),Paragraph(smart_str(obj.comprensorio),style)])
-        allproducts.append([smart_str(u"Provincia"),Paragraph(smart_str(obj.provincia),style)])
-        allproducts.append([smart_str(u"Comune"),Paragraph(smart_str(obj.comune),style)])
-        allproducts.append([smart_str(u"Localita"),Paragraph(smart_str(obj.localita),style)])
-        allproducts.append([smart_str(u"Corso acqua"),Paragraph(smart_str(obj.corso_acqua),style)])
-        allproducts.append([smart_str(u"Reticolo di gestione"),Paragraph(smart_str(obj.reticolo_gestione),style)])
-        allproducts.append([smart_str(u"Geometria"),Paragraph(smart_str(obj.fenomeno_aggiunto),style)])
-        allproducts.append([smart_str(u"Fenomeno"),Paragraph(smart_str(obj.fenomeno),style)])
-        allproducts.append([smart_str(u"Studio Intervento"),Paragraph(smart_str(obj.studio_intervento),style)])
-        allproducts.append([smart_str(u"Tipologia intervento"),Paragraph(smart_str(obj.tipologia_intervento),style)])
-        allproducts.append([smart_str(u"Tipo di opera"),Paragraph(smart_str(obj.tipo_di_opera),style)])
-        allproducts.append([smart_str(u"Categoria intervento"),Paragraph(smart_str(obj.cat_int),style)])
-        allproducts.append([smart_str(u"Area vasta di riferimento"),Paragraph(smart_str(obj.area_vasta_rif),style)])
-        allproducts.append([smart_str(u"Titolo Intervento Studio"),Paragraph(smart_str(obj.titolo_intervento_studio),style)])
-        allproducts.append([smart_str(u"Descrizione sintetica Intervento Studio"),Paragraph(smart_str(obj.descrizione_sintetica_intervento_studio),style)])
-        allproducts.append([smart_str(u"categoria_idr_opera"),Paragraph(smart_str(obj.categoria_idr_opera),style)])
-        allproducts.append([smart_str(u"perimetrazione_autorita_di_bacino"),Paragraph(smart_str(obj.perimetrazione_autorita_di_bacino),style)])
-        allproducts.append([smart_str(u"Classe pericolosita PAI o PGRA"),Paragraph(smart_str(obj.codice_pericolosita_adb_pai),style)])
-        allproducts.append([smart_str(u"Classe rischio PAI o PGRA"),Paragraph(smart_str(obj.classe_rischio_pai),style)])
-        allproducts.append([smart_str(u"stima_rischio_diretto_attuale"),Paragraph(smart_str(obj.stima_rischio_diretto_attuale),style)])
-        allproducts.append([smart_str(u"stima_rischio_indiretto_attuale"),Paragraph(smart_str(obj.stima_rischio_indiretto_attuale),style)])
-        allproducts.append([smart_str(u"stima_rischio_diretto_intervento"),Paragraph(smart_str(obj.stima_rischio_diretto_intervento),style)])
-        allproducts.append([smart_str(u"stima_rischio_indiretto_intervento"),Paragraph(smart_str(obj.stima_rischio_indiretto_intervento),style)])
-        allproducts.append([smart_str(u"ente_proponente"),Paragraph(smart_str(obj.ente_proponente),style)])
-        allproducts.append([smart_str(u"ente_attuatore_competente"),Paragraph(smart_str(obj.ente_attuatore_competente),style)])
-        allproducts.append([smart_str(u"nominativo"),Paragraph(smart_str(obj.nominativo),style)])
-        allproducts.append([smart_str(u"email"),Paragraph(smart_str(obj.email),style)])
-        allproducts.append([smart_str(u"recapito_telefonico"),Paragraph(smart_str(obj.recapito_telefonico),style)])        
-        allproducts.append([smart_str(u"interventi_correlati"),Paragraph(smart_str(obj.interventi_correlati),style)])
-        allproducts.append([smart_str(u"stralcio_funzionale"),Paragraph(smart_str(obj.stralcio_funzionale),style)])
-        allproducts.append([smart_str(u"accordo_di_programma"),Paragraph(smart_str(obj.accordo_di_programma),style)])
-        allproducts.append([smart_str(u"note"),Paragraph(smart_str(obj.note),style)])
-        allproducts.append([smart_str(u"progetto_preliminare"),Paragraph(smart_str(obj.progetto_preliminare),style)])
-        allproducts.append([smart_str(u"mesi_approvazione_progetto_preliminare"),Paragraph(smart_str(obj.mesi_approvazione_progetto_preliminare),style)])
-        allproducts.append([smart_str(u"data_approvazione_progetto_preliminare"),Paragraph(smart_str(obj.data_approvazione_progetto_preliminare),style)])
-        allproducts.append([smart_str(u"riferimento_determina_approvazione_pp"),Paragraph(smart_str(obj.riferimento_determina_approvazione_pp),style)])
-        allproducts.append([smart_str(u"allegato_determina_approvazione_pp"),Paragraph(smart_str(obj.allegato_determina_approvazione_pp),style)])
-        allproducts.append([smart_str(u"progetto_definitivo"),Paragraph(smart_str(obj.progetto_definitivo),style)])
-        allproducts.append([smart_str(u"mesi_approvazione_progetto_definitivo"),Paragraph(smart_str(obj.mesi_approvazione_progetto_definitivo),style)])
-        allproducts.append([smart_str(u"data_approvazione_progetto_definitivo"),Paragraph(smart_str(obj.data_approvazione_progetto_definitivo),style)])
-        allproducts.append([smart_str(u"riferimento_determina_approvazione_pd"),Paragraph(smart_str(obj.riferimento_determina_approvazione_pd),style)])
-        allproducts.append([smart_str(u"allegato_determina_approvazione_pd"),Paragraph(smart_str(obj.allegato_determina_approvazione_pd),style)])
-        allproducts.append([smart_str(u"mesi_approvazione_progetto_esecutivo"),Paragraph(smart_str(obj.mesi_approvazione_progetto_esecutivo),style)])
-        allproducts.append([smart_str(u"data_approvazione_progetto_esecutivo"),Paragraph(smart_str(obj.data_approvazione_progetto_esecutivo),style)])
-        allproducts.append([smart_str(u"riferimento_determina_approvazione_pe"),Paragraph(smart_str(obj.riferimento_determina_approvazione_pe),style)])
-        allproducts.append([smart_str(u"allegato_determina_approvazione_pe"),Paragraph(smart_str(obj.allegato_determina_approvazione_pe),style)])
-        allproducts.append([smart_str(u"mesi_inizio_lavori"),Paragraph(smart_str(obj.mesi_inizio_lavori),style)])
-        allproducts.append([smart_str(u"inizio_lavori"),Paragraph(smart_str(obj.inizio_lavori),style)])
-        allproducts.append([smart_str(u"mesi_fine_lavori"),Paragraph(smart_str(obj.mesi_fine_lavori),style)])
-        allproducts.append([smart_str(u"fine_lavori"),Paragraph(smart_str(obj.fine_lavori),style)])
-        allproducts.append([smart_str(u"elaborati_progettuali"),Paragraph(smart_str(obj.elaborati_progettuali),style)])
-        allproducts.append([smart_str(u"allegato_documento_preliminare"),Paragraph(smart_str(obj.allegato_documento_preliminare),style)])
-        allproducts.append([smart_str(u"conclusione_relazione_finale"),Paragraph(smart_str(obj.conclusione_relazione_finale),style)])        
-        allproducts.append([smart_str(u"mesi_conclusione_relazione_finale"),Paragraph(smart_str(obj.mesi_conclusione_relazione_finale),style)])
-        allproducts.append([smart_str(u"elenco_pareri"),Paragraph(smart_str(obj.elenco_pareri),style)])
-        allproducts.append([smart_str(u"atto_valutazione"),Paragraph(smart_str(obj.atto_valutazione),style)])
-        allproducts.append([smart_str(u"allegato_atto_valutazione"),Paragraph(smart_str(obj.allegato_atto_valutazione),style)])
-        allproducts.append([smart_str(u"codice_unico_progetto"),Paragraph(smart_str(obj.codice_unico_progetto),style)])
-        allproducts.append([smart_str(u"atto_nomina_rup"),Paragraph(smart_str(obj.atto_nomina_rup),style)])
-        allproducts.append([smart_str(u"allegato_atto_nomina_rup"),Paragraph(smart_str(obj.allegato_atto_nomina_rup),style)])
-        allproducts.append([smart_str(u"intervento_opere_accessorie"),Paragraph(smart_str(obj.intervento_opere_accessorie),style)])
-        allproducts.append([smart_str(u"presenza_vincoli_sovraordinati"),Paragraph(smart_str(obj.presenza_vincoli_sovraordinati),style)])
-        allproducts.append([smart_str(u"desc_opere_acc_strum"),Paragraph(smart_str(obj.desc_opere_acc_strum),style)])
-        allproducts.append([smart_str(u"importo_opere_accessorie_strumentali"),Paragraph(smart_str(obj.importo_opere_accessorie_strumentali),style)])
-        allproducts.append([smart_str(u"desc_opere_acc_no_strum"),Paragraph(smart_str(obj.desc_opere_acc_no_strum),style)])
-        allproducts.append([smart_str(u"importo_opere_accessorie_no_strumentali"),Paragraph(smart_str(obj.importo_opere_accessorie_no_strumentali),style)])
-        allproducts.append([smart_str(u"intervento_opere_mitigazione_compensazione"),Paragraph(smart_str(obj.intervento_opere_mitigazione_compensazione),style)])
-        allproducts.append([smart_str(u"desc_int_opere_mitig_comp"),Paragraph(smart_str(obj.desc_int_opere_mitig_comp),style)])
-        allproducts.append([smart_str(u"importo_opere_mitig_comp"),Paragraph(smart_str(obj.importo_opere_mitig_comp),style)])
-        allproducts.append([smart_str(u"importo_totale_intervento"),Paragraph(smart_str(obj.importo_totale_intervento),style)])
-        allproducts.append([smart_str(u"importo_richiesto"),Paragraph(smart_str(obj.importo_richiesto),style)])
-        allproducts.append([smart_str(u"importo_cofinanziato_altri"),Paragraph(smart_str(obj.importo_cofinanziato_altri),style)])
-        allproducts.append([smart_str(u"ente_cofinanziatore"),Paragraph(smart_str(obj.ente_cofinanziatore),style)])
-        allproducts.append([smart_str(u"efficacia"),Paragraph(smart_str(obj.efficacia),style)])
-        allproducts.append([smart_str(u"efficacia_val"),Paragraph(smart_str(obj.efficacia_val),style)])
-        allproducts.append([smart_str(u"cantierabilita"),Paragraph(smart_str(obj.cantierabilita),style)])
-        allproducts.append([smart_str(u"cantierabilita_val"),Paragraph(smart_str(obj.cantierabilita_val),style)])
-        allproducts.append([smart_str(u"variante_urbanistica"),Paragraph(smart_str(obj.variante_urbanistica),style)])
-        allproducts.append([smart_str(u"variante_urbanistica_val"),Paragraph(smart_str(obj.variante_urbanistica_val),style)])
-        allproducts.append([smart_str(u"valutazione_impatto_ambientale"),Paragraph(smart_str(obj.valutazione_impatto_ambientale),style)])
-        allproducts.append([smart_str(u"valutazione_impatto_ambientale_val"),Paragraph(smart_str(obj.valutazione_impatto_ambientale_val),style)])
-        allproducts.append([smart_str(u"esproprio"),Paragraph(smart_str(obj.esproprio),style)])
-        allproducts.append([smart_str(u"esproprio_val"),Paragraph(smart_str(obj.esproprio_val),style)])
-        allproducts.append([smart_str(u"sostenibilita"),Paragraph(smart_str(obj.sostenibilita),style)])
-        allproducts.append([smart_str(u"sostenibilita_val"),Paragraph(smart_str(obj.sostenibilita_val),style)])
-        allproducts.append([smart_str(u"Punteggio provvisoriamente assegnato"),Paragraph(smart_str(obj.totale),style)])
-        allproducts.append([smart_str(u"conclusione_istruttoria"),Paragraph(smart_str(obj.conclusione_istruttoria),style)])
-        allproducts.append([smart_str(u"nominativo_compilatore"),Paragraph(smart_str(obj.nominativo_compilatore),style)])
-        allproducts.append([smart_str(u"email_comp"),Paragraph(smart_str(obj.email_comp),style)])
-        allproducts.append([smart_str(u"Geni_civili_02_2016"),Paragraph(smart_str(obj.nuovi_geni_civili),style)])
-        allproducts.append([smart_str(u"priorita"),Paragraph(smart_str(obj.priorita),style)])
-        allproducts.append([smart_str(u"codice_rendis"),Paragraph(smart_str(obj.codice_rendis),style)])
-        allproducts.append([smart_str(u"data_trasmissione_istruttoria"),Paragraph(smart_str(obj.data_trasmissione_istruttoria),style)])
+        allproducts.append([Paragraph(smart_str(u"codice_intervento"),style),Paragraph(smart_str(obj.codice_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"bacino_idrografico"),style),Paragraph(smart_str(obj.bacino_idrografico),style)])
+        allproducts.append([Paragraph(smart_str(u"comprensorio"),style),Paragraph(smart_str(obj.comprensorio),style)])
+        allproducts.append([Paragraph(smart_str(u"provincia"),style),Paragraph(smart_str(obj.provincia),style)])
+        allproducts.append([Paragraph(smart_str(u"comune"),style),Paragraph(smart_str(obj.comune),style)])
+        allproducts.append([Paragraph(smart_str(u"localita"),style),Paragraph(smart_str(obj.localita),style)])
+        allproducts.append([Paragraph(smart_str(u"corso_acqua"),style),Paragraph(smart_str(obj.corso_acqua),style)])
+        allproducts.append([Paragraph(smart_str(u"reticolo_gestione"),style),Paragraph(smart_str(obj.reticolo_gestione),style)])
+        allproducts.append([Paragraph(smart_str(u"geometria"),style),Paragraph(smart_str(obj.fenomeno_aggiunto),style)])
+        allproducts.append([Paragraph(smart_str(u"fenomeno"),style),Paragraph(smart_str(obj.fenomeno),style)])
+        allproducts.append([Paragraph(smart_str(u"studio_intervento"),style),Paragraph(smart_str(obj.studio_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"tipologia_intervento"),style),Paragraph(smart_str(obj.tipologia_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"tipo_di_opera"),style),Paragraph(smart_str(obj.tipo_di_opera),style)])
+        allproducts.append([Paragraph(smart_str(u"cat_int"),style),Paragraph(smart_str(obj.cat_int),style)])
+        allproducts.append([Paragraph(smart_str(u"area_vasta_rif"),style),Paragraph(smart_str(obj.area_vasta_rif),style)])
+        allproducts.append([Paragraph(smart_str(u"titolo_intervento_studio"),style),Paragraph(smart_str(obj.titolo_intervento_studio),style)])
+        allproducts.append([Paragraph(smart_str(u"descrizione_sintetica_intervento_studio"),style),Paragraph(smart_str(obj.descrizione_sintetica_intervento_studio),style)])
+        allproducts.append([Paragraph(smart_str(u"categoria_idr_opera"),style),Paragraph(smart_str(obj.categoria_idr_opera),style)])
+        allproducts.append([Paragraph(smart_str(u"perimetrazione_autorita_di_bacino"),style),Paragraph(smart_str(obj.perimetrazione_autorita_di_bacino),style)])
+        allproducts.append([Paragraph(smart_str(u"Classe pericolosita PAI o PGRA attuale"),style),Paragraph(smart_str(obj.codice_pericolosita_adb_pai),style)])
+        allproducts.append([Paragraph(smart_str(u"Classe rischio PAI o PGRA attuale"),style),Paragraph(smart_str(obj.classe_rischio_pai),style)])
+        allproducts.append([Paragraph(smart_str(u"perimetrazione_pericolosita_attuale"),style),Paragraph(smart_str(obj.perimetrazione_pericolosita_attuale),style)])
+        allproducts.append([Paragraph(smart_str(u"perimetrazione_pericolosita_post_intervento"),style),Paragraph(smart_str(obj.perimetrazione_pericolosita_post_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"stima_rischio_diretto_attuale"),style),Paragraph(smart_str(obj.stima_rischio_diretto_attuale),style)])
+        allproducts.append([Paragraph(smart_str(u"stima_rischio_indiretto_attuale"),style),Paragraph(smart_str(obj.stima_rischio_indiretto_attuale),style)])
+        allproducts.append([Paragraph(smart_str(u"stima_rischio_diretto_intervento"),style),Paragraph(smart_str(obj.stima_rischio_diretto_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"stima_rischio_indiretto_intervento"),style),Paragraph(smart_str(obj.stima_rischio_indiretto_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"ente_proponente"),style),Paragraph(smart_str(obj.ente_proponente),style)])
+        allproducts.append([Paragraph(smart_str(u"ente_attuatore_competente"),style),Paragraph(smart_str(obj.ente_attuatore_competente),style)])
+        allproducts.append([Paragraph(smart_str(u"nominativo"),style),Paragraph(smart_str(obj.nominativo),style)])
+        allproducts.append([Paragraph(smart_str(u"email"),style),Paragraph(smart_str(obj.email),style)])
+        allproducts.append([Paragraph(smart_str(u"recapito_telefonico"),style),Paragraph(smart_str(obj.recapito_telefonico),style)])            
+        allproducts.append([Paragraph(smart_str(u"interventi_correlati"),style),Paragraph(smart_str(obj.interventi_correlati),style)])
+        allproducts.append([Paragraph(smart_str(u"stralcio_funzionale"),style),Paragraph(smart_str(obj.stralcio_funzionale),style)])
+        allproducts.append([Paragraph(smart_str(u"accordo_di_programma"),style),Paragraph(smart_str(obj.accordo_di_programma),style)])
+        allproducts.append([Paragraph(smart_str(u"note"),style),Paragraph(smart_str(obj.note),style)])
+        allproducts.append([Paragraph(smart_str(u"progetto_preliminare"),style),Paragraph(smart_str(obj.progetto_preliminare),style)])
+        allproducts.append([Paragraph(smart_str(u"mesi_approvazione_progetto_preliminare"),style),Paragraph(smart_str(obj.mesi_approvazione_progetto_preliminare),style)])
+        allproducts.append([Paragraph(smart_str(u"data_approvazione_progetto_preliminare"),style),Paragraph(smart_str(obj.data_approvazione_progetto_preliminare),style)])
+        allproducts.append([Paragraph(smart_str(u"riferimento_determina_approvazione_pp"),style),Paragraph(smart_str(obj.riferimento_determina_approvazione_pp),style)])
+        allproducts.append([Paragraph(smart_str(u"allegato_determina_approvazione_pp"),style),Paragraph(smart_str(obj.allegato_determina_approvazione_pp),style)])
+        allproducts.append([Paragraph(smart_str(u"progetto_definitivo"),style),Paragraph(smart_str(obj.progetto_definitivo),style)])
+        allproducts.append([Paragraph(smart_str(u"mesi_approvazione_progetto_definitivo"),style),Paragraph(smart_str(obj.mesi_approvazione_progetto_definitivo),style)])
+        allproducts.append([Paragraph(smart_str(u"data_approvazione_progetto_definitivo"),style),Paragraph(smart_str(obj.data_approvazione_progetto_definitivo),style)])
+        allproducts.append([Paragraph(smart_str(u"riferimento_determina_approvazione_pd"),style),Paragraph(smart_str(obj.riferimento_determina_approvazione_pd),style)])
+        allproducts.append([Paragraph(smart_str(u"allegato_determina_approvazione_pd"),style),Paragraph(smart_str(obj.allegato_determina_approvazione_pd),style)])
+        allproducts.append([Paragraph(smart_str(u"mesi_approvazione_progetto_esecutivo"),style),Paragraph(smart_str(obj.mesi_approvazione_progetto_esecutivo),style)])
+        allproducts.append([Paragraph(smart_str(u"data_approvazione_progetto_esecutivo"),style),Paragraph(smart_str(obj.data_approvazione_progetto_esecutivo),style)])
+        allproducts.append([Paragraph(smart_str(u"riferimento_determina_approvazione_pe"),style),Paragraph(smart_str(obj.riferimento_determina_approvazione_pe),style)])
+        allproducts.append([Paragraph(smart_str(u"allegato_determina_approvazione_pe"),style),Paragraph(smart_str(obj.allegato_determina_approvazione_pe),style)])
+        allproducts.append([Paragraph(smart_str(u"mesi_inizio_lavori"),style),Paragraph(smart_str(obj.mesi_inizio_lavori),style)])
+        allproducts.append([Paragraph(smart_str(u"inizio_lavori"),style),Paragraph(smart_str(obj.inizio_lavori),style)])
+        allproducts.append([Paragraph(smart_str(u"mesi_fine_lavori"),style),Paragraph(smart_str(obj.mesi_fine_lavori),style)])
+        allproducts.append([Paragraph(smart_str(u"fine_lavori"),style),Paragraph(smart_str(obj.fine_lavori),style)])
+        allproducts.append([Paragraph(smart_str(u"elaborati_progettuali"),style),Paragraph(smart_str(obj.elaborati_progettuali),style)])
+        allproducts.append([Paragraph(smart_str(u"descrizione_elaborati_prog"),style),Paragraph(smart_str(obj.descrizione_elaborati_prog),style)])
+        allproducts.append([Paragraph(smart_str(u"allegato_documento_preliminare"),style),Paragraph(smart_str(obj.allegato_documento_preliminare),style)])
+        allproducts.append([Paragraph(smart_str(u"conclusione_relazione_finale"),style),Paragraph(smart_str(obj.conclusione_relazione_finale),style)])
+        allproducts.append([Paragraph(smart_str(u"mesi_conclusione_relazione_finale"),style),Paragraph(smart_str(obj.mesi_conclusione_relazione_finale),style)])
+        allproducts.append([Paragraph(smart_str(u"elenco_pareri"),style),Paragraph(smart_str(obj.elenco_pareri),style)])
+        allproducts.append([Paragraph(smart_str(u"atto_valutazione"),style),Paragraph(smart_str(obj.atto_valutazione),style)])
+        allproducts.append([Paragraph(smart_str(u"allegato_atto_valutazione"),style),Paragraph(smart_str(obj.allegato_atto_valutazione),style)])
+        allproducts.append([Paragraph(smart_str(u"codice_unico_progetto"),style),Paragraph(smart_str(obj.codice_unico_progetto),style)])
+        allproducts.append([Paragraph(smart_str(u"atto_nomina_rup"),style),Paragraph(smart_str(obj.atto_nomina_rup),style)])
+        allproducts.append([Paragraph(smart_str(u"allegato_atto_nomina_rup"),style),Paragraph(smart_str(obj.allegato_atto_nomina_rup),style)])
+        allproducts.append([Paragraph(smart_str(u"intervento_opere_accessorie"),style),Paragraph(smart_str(obj.intervento_opere_accessorie),style)])
+        allproducts.append([Paragraph(smart_str(u"presenza_vincoli_sovraordinati"),style),Paragraph(smart_str(obj.presenza_vincoli_sovraordinati),style)])
+        allproducts.append([Paragraph(smart_str(u"desc_opere_acc_strum"),style),Paragraph(smart_str(obj.desc_opere_acc_strum),style)])
+        allproducts.append([Paragraph(smart_str(u"importo_opere_accessorie_strumentali"),style),Paragraph(smart_str(obj.importo_opere_accessorie_strumentali),style)])
+        allproducts.append([Paragraph(smart_str(u"desc_opere_acc_no_strum"),style),Paragraph(smart_str(obj.desc_opere_acc_no_strum),style)])
+        allproducts.append([Paragraph(smart_str(u"importo_opere_accessorie_no_strumentali"),style),Paragraph(smart_str(obj.importo_opere_accessorie_no_strumentali),style)])
+        allproducts.append([Paragraph(smart_str(u"intervento_opere_mitigazione_compensazione"),style),Paragraph(smart_str(obj.intervento_opere_mitigazione_compensazione),style)])
+        allproducts.append([Paragraph(smart_str(u"desc_int_opere_mitig_comp"),style),Paragraph(smart_str(obj.desc_int_opere_mitig_comp),style)])
+        allproducts.append([Paragraph(smart_str(u"importo_opere_mitig_comp"),style),Paragraph(smart_str(obj.importo_opere_mitig_comp),style)])
+        allproducts.append([Paragraph(smart_str(u"importo_totale_intervento"),style),Paragraph(smart_str(obj.importo_totale_intervento),style)])
+        allproducts.append([Paragraph(smart_str(u"importo_richiesto"),style),Paragraph(smart_str(obj.importo_richiesto),style)])
+        allproducts.append([Paragraph(smart_str(u"importo_cofinanziato_altri"),style),Paragraph(smart_str(obj.importo_cofinanziato_altri),style)])
+        allproducts.append([Paragraph(smart_str(u"ente_cofinanziatore"),style),Paragraph(smart_str(obj.ente_cofinanziatore),style)])            
+        allproducts.append([Paragraph(smart_str(u"efficacia"),style),Paragraph(smart_str(obj.efficacia),style)])
+        allproducts.append([Paragraph(smart_str(u"efficacia_val"),style),Paragraph(smart_str(obj.efficacia_val),style)])
+        allproducts.append([Paragraph(smart_str(u"cantierabilita"),style),Paragraph(smart_str(obj.cantierabilita),style)])
+        allproducts.append([Paragraph(smart_str(u"cantierabilita_val"),style),Paragraph(smart_str(obj.cantierabilita_val),style)])
+        allproducts.append([Paragraph(smart_str(u"variante_urbanistica"),style),Paragraph(smart_str(obj.variante_urbanistica),style)])
+        allproducts.append([Paragraph(smart_str(u"variante_urbanistica_val"),style),Paragraph(smart_str(obj.variante_urbanistica_val),style)])
+        allproducts.append([Paragraph(smart_str(u"valutazione_impatto_ambientale"),style),Paragraph(smart_str(obj.valutazione_impatto_ambientale),style)])
+        allproducts.append([Paragraph(smart_str(u"valutazione_impatto_ambientale_val"),style),Paragraph(smart_str(obj.valutazione_impatto_ambientale_val),style)])
+        allproducts.append([Paragraph(smart_str(u"esproprio"),style),Paragraph(smart_str(obj.esproprio),style)])
+        allproducts.append([Paragraph(smart_str(u"esproprio_val"),style),Paragraph(smart_str(obj.esproprio_val),style)])
+        allproducts.append([Paragraph(smart_str(u"sostenibilita"),style),Paragraph(smart_str(obj.sostenibilita),style)])
+        allproducts.append([Paragraph(smart_str(u"sostenibilita_val"),style),Paragraph(smart_str(obj.sostenibilita_val),style)])
+        allproducts.append([Paragraph(smart_str(u"Punteggio provvisoriamente assegnato"),style),Paragraph(smart_str(obj.totale),style)])
+        allproducts.append([Paragraph(smart_str(u"conclusione_istruttoria"),style),Paragraph(smart_str(obj.conclusione_istruttoria),style)])
+        allproducts.append([Paragraph(smart_str(u"nominativo_compilatore"),style),Paragraph(smart_str(obj.nominativo_compilatore),style)])
+        allproducts.append([Paragraph(smart_str(u"email_comp"),style),Paragraph(smart_str(obj.email_comp),style)])
+        allproducts.append([Paragraph(smart_str(u"Geni_civili_02_2016"),style),Paragraph(smart_str(obj.nuovi_geni_civili),style)])
+        allproducts.append([Paragraph(smart_str(u"priorita"),style),Paragraph(smart_str(obj.priorita),style)])
+        allproducts.append([Paragraph(smart_str(u"codice_rendis"),style),Paragraph(smart_str(obj.codice_rendis),style)])
+        allproducts.append([Paragraph(smart_str(u"data_trasmissione_istruttoria"),style),Paragraph(smart_str(obj.data_trasmissione_istruttoria),style)])
         
-        if request.user.is_superuser:
-            allproducts.append([smart_str(u"a_finanziamento"),Paragraph(smart_str(obj.a_finanziamento),style)])
+        #if request.user.is_superuser:
+            #allproducts.append([smart_str(u"a_finanziamento"),Paragraph(smart_str(obj.a_finanziamento),style)])
         
-        t = Table([headings] + allproducts,[230,250])
+        t = Table([headings] + allproducts,[150,350])
         
         t.setStyle(TableStyle([
             (
@@ -779,6 +794,8 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"perimetrazione_autorita_di_bacino"),
         smart_str(u"codice_pericolosita_adb_pai"),
         smart_str(u"classe_rischio_pai"),
+        smart_str(u"perimetrazione_pericolosita_attuale"),
+        smart_str(u"perimetrazione_pericolosita_post_intervento"),
         smart_str(u"stima_rischio_diretto_attuale"),
         smart_str(u"stima_rischio_indiretto_attuale"),
         smart_str(u"stima_rischio_diretto_intervento"),
@@ -811,6 +828,7 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"mesi_fine_lavori"),
         smart_str(u"fine_lavori"),
         smart_str(u"elaborati_progettuali"),
+        smart_str(u"descrizione_elaborati_prog"),
         smart_str(u"allegato_documento_preliminare"),
         smart_str(u"conclusione_relazione_finale"),           
         smart_str(u"mesi_conclusione_relazione_finale"),     
@@ -853,7 +871,7 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"priorita"),
         smart_str(u"codice_rendis"),
         smart_str(u"data_trasmissione_istruttoria"),
-        smart_str(u"a_finanziamento") if request.user.is_superuser else smart_str(u""),
+        #smart_str(u"a_finanziamento") if request.user.is_superuser else smart_str(u""),
         #smart_str(u"nuovi_geni_civili") if request.user.is_superuser else smart_str(u""),
     ])
     
@@ -899,6 +917,8 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.perimetrazione_autorita_di_bacino),
             smart_str(obj.codice_pericolosita_adb_pai),
             smart_str(obj.classe_rischio_pai),
+            smart_str(obj.perimetrazione_pericolosita_attuale),
+            smart_str(obj.perimetrazione_pericolosita_post_intervento),
             smart_str(obj.stima_rischio_diretto_attuale),
             smart_str(obj.stima_rischio_indiretto_attuale),
             smart_str(obj.stima_rischio_diretto_intervento),
@@ -931,6 +951,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.mesi_fine_lavori),
             smart_str(obj.fine_lavori),
             smart_str(obj.elaborati_progettuali),
+            smart_str(obj.descrizione_elaborati_prog),
             smart_str(obj.allegato_documento_preliminare),
             smart_str(obj.conclusione_relazione_finale),            
             smart_str(obj.mesi_conclusione_relazione_finale),
@@ -973,7 +994,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.priorita),
             smart_str(obj.codice_rendis),
             smart_str(obj.data_trasmissione_istruttoria),
-            smart_str(obj.a_finanziamento) if request.user.is_superuser else smart_str(""),
+            #smart_str(obj.a_finanziamento) if request.user.is_superuser else smart_str(""),
             #smart_str(obj.nuovi_geni_civili) if request.user.is_superuser else smart_str(""),
         ])
         
@@ -1020,6 +1041,8 @@ def export_xls(modeladmin, request, queryset):
         (u"perimetrazione_autorita_di_bacino", 8000),
         (u"codice_pericolosita_adb_pai", 8000),
         (u"classe_rischio_pai", 8000),
+        (u"perimetrazione_pericolosita_attuale", 8000),
+        (u"perimetrazione_pericolosita_post_intervento", 8000),
         (u"stima_rischio_diretto_attuale", 8000),
         (u"stima_rischio_indiretto_attuale", 8000),
         (u"stima_rischio_diretto_intervento", 8000),
@@ -1052,6 +1075,7 @@ def export_xls(modeladmin, request, queryset):
         (u"mesi_fine_lavori", 8000),
         (u"fine_lavori", 8000),
         (u"elaborati_progettuali", 8000),
+        (u"descrizione_elaborati_prog", 8000),
         (u"allegato_documento_preliminare", 8000),
         (u"conclusione_relazione_finale", 8000),        
         (u"mesi_conclusione_relazione_finale", 8000),
@@ -1096,8 +1120,8 @@ def export_xls(modeladmin, request, queryset):
         (u"data_trasmissione_istruttoria", 8000),
     ]
 
-    if request.user.is_superuser:
-        columns.append((u"a_finanziamento", 8000)),
+    #if request.user.is_superuser:
+        #columns.append((u"a_finanziamento", 8000)),
         
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
@@ -1149,6 +1173,8 @@ def export_xls(modeladmin, request, queryset):
             smart_str(obj.perimetrazione_autorita_di_bacino),
             smart_str(obj.codice_pericolosita_adb_pai),
             smart_str(obj.classe_rischio_pai),
+            smart_str(obj.perimetrazione_pericolosita_attuale),
+            smart_str(obj.perimetrazione_pericolosita_post_intervento),
             float(smart_str(obj.stima_rischio_diretto_attuale)) if obj.stima_rischio_diretto_attuale else None,
             float(smart_str(obj.stima_rischio_indiretto_attuale)) if obj.stima_rischio_indiretto_attuale else None,
             float(smart_str(obj.stima_rischio_diretto_intervento)) if obj.stima_rischio_diretto_intervento else None,
@@ -1181,6 +1207,7 @@ def export_xls(modeladmin, request, queryset):
             smart_str(obj.mesi_fine_lavori),
             smart_str(obj.fine_lavori),
             smart_str(obj.elaborati_progettuali),
+            smart_str(obj.descrizione_elaborati_prog),
             smart_str(obj.allegato_documento_preliminare),
             smart_str(obj.conclusione_relazione_finale),            
             smart_str(obj.mesi_conclusione_relazione_finale),
@@ -1228,8 +1255,8 @@ def export_xls(modeladmin, request, queryset):
             smart_str(obj.data_trasmissione_istruttoria),
         ]
         
-        if request.user.is_superuser:
-            row.append(smart_str(obj.a_finanziamento)),
+        #if request.user.is_superuser:
+            #row.append(smart_str(obj.a_finanziamento)),
                 
         for col_num in xrange(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
@@ -1279,7 +1306,7 @@ class InterventoAdmin(GeoModelAdmin):
             
             newQueryset = Intervento.objects.all()
             #if obj.conclusione_istruttoria is True:
-            email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente", 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it',obj.email,obj.email_comp,'s.michela@provincia.ms.it',obj.bacino_idrografico.email],['mari@lamma.rete.toscana.it'])
+            email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente", 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it',obj.email,obj.email_comp,obj.bacino_idrografico.email],['mari@lamma.rete.toscana.it'])
             email.attach(str(obj.codice_intervento)+'_segnalazione.pdf',export_pdf_single(obj, request, newQueryset, cod = obj.codice_intervento),'application/pdf')
             email.send(fail_silently=False)
             return self.response_post_save_change(request, obj)
@@ -1338,7 +1365,7 @@ class InterventoAdmin(GeoModelAdmin):
             
             newQueryset = Intervento.objects.all()
             #if obj.conclusione_istruttoria is True:
-            email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente", 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it',obj.email,obj.email_comp,'s.michela@provincia.ms.it',obj.bacino_idrografico.email],['mari@lamma.rete.toscana.it'])
+            email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente", 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it',obj.email,obj.email_comp,obj.bacino_idrografico.email],['mari@lamma.rete.toscana.it'])
             email.attach(str(obj.codice_intervento)+'_segnalazione.pdf',export_pdf_single(obj, request, newQueryset, cod = obj.codice_intervento),'application/pdf')
             email.send(fail_silently=False)
             return self.response_post_save_add(request, obj)
@@ -1445,6 +1472,8 @@ class InterventoAdmin(GeoModelAdmin):
                 'perimetrazione_autorita_di_bacino',
                 'codice_pericolosita_adb_pai',
                 'classe_rischio_pai',
+                'perimetrazione_pericolosita_attuale',
+                'perimetrazione_pericolosita_post_intervento',
                 'stima_rischio_diretto_attuale',
                 'stima_rischio_indiretto_attuale',
                 'stima_rischio_diretto_intervento',
@@ -1487,6 +1516,7 @@ class InterventoAdmin(GeoModelAdmin):
                 'fine_lavori',
                 'mesi_fine_lavori',  
                 'elaborati_progettuali',
+                'descrizione_elaborati_prog',
                 'allegato_documento_preliminare',
                 'conclusione_relazione_finale',
                 'mesi_conclusione_relazione_finale',
@@ -1556,16 +1586,16 @@ class InterventoAdmin(GeoModelAdmin):
                 ]
             }
         ),
-        (
-        'SEZIONE INTERNA RT',
-            {'fields':
-                [
-                #'finanziato_anche_in_parte',
-                'a_finanziamento',
-                ],
-                'classes': ['collapse']
-            }
-        ),
+        #(
+        #'SEZIONE INTERNA RT',
+        #    {'fields':
+        #        [
+        #        #'finanziato_anche_in_parte',
+        #        'a_finanziamento',
+        #        ],
+        #        'classes': ['collapse']
+        #    }
+        #),
     ]    
 
     readonly_fields = [
@@ -1587,6 +1617,7 @@ class InterventoAdmin(GeoModelAdmin):
         'ente_proponente',
         'importo_totale_intervento',
         'conclusione_istruttoria',
+        'data_trasmissione_istruttoria',
         #'valutazione_impatto_ambientale',
         #'sostenibilita',
         #'added',
@@ -1613,7 +1644,7 @@ class InterventoAdmin(GeoModelAdmin):
         risorse_economiche=list(fs[3][1]['fields'])
         valutazione=list(fs[4][1]['fields'])
         conclusione_istruttoria=list(fs[5][1]['fields'])        
-        regione=list(fs[6][1]['fields'])
+        #regione=list(fs[6][1]['fields'])
 
         if not request.user.is_superuser:
             return [
@@ -1699,6 +1730,7 @@ class InterventoAdmin(GeoModelAdmin):
                 obj.mesi_fine_lavori = None
                 obj.fine_lavori = None
                 obj.elaborati_progettuali = None
+                obj.descrizione_elaborati_prog = None
                 obj.elenco_pareri = None
                 obj.atto_valutazione = False
                 obj.allegato_atto_valutazione = None
@@ -1815,6 +1847,7 @@ class InterventoAdmin(GeoModelAdmin):
                     obj.mesi_fine_lavori = None
                     obj.fine_lavori = None
                     obj.elaborati_progettuali = None
+                    obj.descrizione_elaborati_prog = None
                     obj.elenco_pareri = None
                     obj.atto_valutazione = False
                     obj.allegato_atto_valutazione = None
@@ -1912,6 +1945,7 @@ class InterventoAdmin(GeoModelAdmin):
                     obj.mesi_fine_lavori = None
                     obj.fine_lavori = None
                     obj.elaborati_progettuali = None
+                    obj.descrizione_elaborati_prog = None
                     obj.elenco_pareri = None
                     obj.atto_valutazione = False
                     obj.allegato_atto_valutazione = None
