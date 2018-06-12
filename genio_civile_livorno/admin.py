@@ -41,7 +41,7 @@ from django.utils.encoding import force_text
 register = template.Library()
 
 # Register your models here.
-    
+
 class RequiredFormSet(forms.models.BaseInlineFormSet):
       def __init__(self, *args, **kwargs):
           super(RequiredFormSet, self).__init__(*args, **kwargs)
@@ -70,7 +70,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     #    self.fields['coord_y'].initial = 0
     #    self.fields['lat'].initial = 0
     #    self.fields['lon'].initial = 0
-    
+
     class Meta:
         model = Intervento
         fields = '__all__'
@@ -91,16 +91,16 @@ class CronoprogrammaAdminForm(forms.ModelForm):
           'desc_opere_acc_strum': forms.Textarea(attrs={'rows':2, 'cols':80}),
           'desc_opere_acc_no_strum': forms.Textarea(attrs={'rows':2, 'cols':80}),
           'desc_int_opere_mitig_comp': forms.Textarea(attrs={'rows':2, 'cols':80}),
-          'allegato_determina_approvazione_pp': AdminResubmitFileWidget,          
-          'allegato_determina_approvazione_pd': AdminResubmitFileWidget,          
-          'allegato_determina_approvazione_pe': AdminResubmitFileWidget,          
-          'allegato_documento_preliminare': AdminResubmitFileWidget,          
-          'allegato_atto_valutazione': AdminResubmitFileWidget,          
-          'allegato_atto_nomina_rup': AdminResubmitFileWidget,          
-          #'elaborati_progettuali': AdminResubmitFileWidget,          
-        } 
+          'allegato_determina_approvazione_pp': AdminResubmitFileWidget,
+          'allegato_determina_approvazione_pd': AdminResubmitFileWidget,
+          'allegato_determina_approvazione_pe': AdminResubmitFileWidget,
+          'allegato_documento_preliminare': AdminResubmitFileWidget,
+          'allegato_atto_valutazione': AdminResubmitFileWidget,
+          'allegato_atto_nomina_rup': AdminResubmitFileWidget,
+          #'elaborati_progettuali': AdminResubmitFileWidget,
+        }
 
-    # PARTE DI CONTROLLO PER LE DATE CON CANTIRABILITA        
+    # PARTE DI CONTROLLO PER LE DATE CON CANTIRABILITA
     #def clean_cantierabilita(self):
     #    progetto_preliminare = self.cleaned_data['progetto_preliminare']
     #    cantierabilita = self.cleaned_data['cantierabilita'].id
@@ -112,9 +112,9 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     #            if data_approvazione_progetto_preliminare < today:
     #                raise forms.ValidationError("Hai toppato!")
     #    return cantierabilita
-        
+
     # PARTE DI CONTROLLO PER IL PROGETTO PRELIMINARE
-    
+
     def clean_mesi_approvazione_progetto_preliminare(self):
         #progetto_preliminare = self.cleaned_data['progetto_preliminare']
         mesi_approvazione_progetto_preliminare = self.cleaned_data['mesi_approvazione_progetto_preliminare']
@@ -125,8 +125,8 @@ class CronoprogrammaAdminForm(forms.ModelForm):
             if (mesi_approvazione_progetto_preliminare is None) and not isinstance(data_approvazione_progetto_preliminare, datetime.date):
                 #raise forms.ValidationError("Hai indicato come obbligatorio l'inserimento dei MESI di approvazione progetto preliminare!")
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
-        return mesi_approvazione_progetto_preliminare    
-        
+        return mesi_approvazione_progetto_preliminare
+
     def clean_allegato_determina_approvazione_pp(self):
         allegato_determina_approvazione_pp = self.cleaned_data['allegato_determina_approvazione_pp']
         riferimento_determina_approvazione_pp = self.cleaned_data['riferimento_determina_approvazione_pp']
@@ -135,8 +135,8 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'INTERVENTO' and strip_text != "":
             if allegato_determina_approvazione_pp is None:
                 raise forms.ValidationError("Hai riempito il campo riferimento_determina_approvazione_pp. Questo campo è obbligatorio!")
-        return allegato_determina_approvazione_pp        
-        
+        return allegato_determina_approvazione_pp
+
     #def clean_data_determina_approvazione_pp(self):
     #    data_determina_approvazione_pp = self.cleaned_data['data_determina_approvazione_pp']
     #    riferimento_determina_approvazione_pp = self.cleaned_data['riferimento_determina_approvazione_pp']
@@ -151,7 +151,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     def clean_mesi_approvazione_progetto_definitivo(self):
         #progetto_definitivo = self.cleaned_data['progetto_definitivo']
         mesi_approvazione_progetto_definitivo = self.cleaned_data['mesi_approvazione_progetto_definitivo']
-        data_approvazione_progetto_definitivo = self.cleaned_data['data_approvazione_progetto_definitivo']        
+        data_approvazione_progetto_definitivo = self.cleaned_data['data_approvazione_progetto_definitivo']
         studio_intervento = self.cleaned_data['studio_intervento'].text
         #if studio_intervento == 'INTERVENTO' and progetto_definitivo == True:
         if studio_intervento == 'INTERVENTO':
@@ -183,12 +183,12 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     # PARTE DI CONTROLLO PER IL PROGETTO ESECUTIVO
     def clean_mesi_approvazione_progetto_esecutivo(self):
         mesi_approvazione_progetto_esecutivo = self.cleaned_data['mesi_approvazione_progetto_esecutivo']
-        data_approvazione_progetto_esecutivo = self.cleaned_data['data_approvazione_progetto_esecutivo']        
+        data_approvazione_progetto_esecutivo = self.cleaned_data['data_approvazione_progetto_esecutivo']
         studio_intervento = self.cleaned_data['studio_intervento'].text
         if studio_intervento == 'INTERVENTO':
             if (mesi_approvazione_progetto_esecutivo is None) and not isinstance(data_approvazione_progetto_esecutivo, datetime.date):
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
-        return mesi_approvazione_progetto_esecutivo      
+        return mesi_approvazione_progetto_esecutivo
 
     def clean_allegato_determina_approvazione_pe(self):
         allegato_determina_approvazione_pe = self.cleaned_data['allegato_determina_approvazione_pe']
@@ -198,8 +198,8 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'INTERVENTO' and strip_text != "":
             if allegato_determina_approvazione_pe is None:
                 raise forms.ValidationError("Hai riempito il campo riferimento_determina_approvazione_pe. Questo campo e obbligatorio!")
-        return allegato_determina_approvazione_pe        
-        
+        return allegato_determina_approvazione_pe
+
     #def clean_data_determina_approvazione_pe(self):
     #    data_determina_approvazione_pe = self.cleaned_data['data_determina_approvazione_pe']
     #    riferimento_determina_approvazione_pe = self.cleaned_data['riferimento_determina_approvazione_pe']
@@ -208,12 +208,12 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     #    if studio_intervento == 'INTERVENTO' and strip_text != "":
     #        if not isinstance(data_determina_approvazione_pe, datetime.date):
     #            raise forms.ValidationError("Hai riempito il campo riferimento_determina_approvazione_pe. Questo campo e obbligatorio!")
-    #    return data_determina_approvazione_pe    
+    #    return data_determina_approvazione_pe
 
     # PARTE DI CONTROLLO INIZIO-FINE LAVORI
     def clean_mesi_inizio_lavori(self):
         mesi_inizio_lavori = self.cleaned_data['mesi_inizio_lavori']
-        inizio_lavori = self.cleaned_data['inizio_lavori']        
+        inizio_lavori = self.cleaned_data['inizio_lavori']
         studio_intervento = self.cleaned_data['studio_intervento'].text
         if studio_intervento == 'INTERVENTO':
             if (mesi_inizio_lavori is None or mesi_inizio_lavori == 0) and not isinstance(inizio_lavori, datetime.date):
@@ -222,21 +222,21 @@ class CronoprogrammaAdminForm(forms.ModelForm):
 
     def clean_mesi_fine_lavori(self):
         mesi_fine_lavori = self.cleaned_data['mesi_fine_lavori']
-        fine_lavori = self.cleaned_data['fine_lavori']        
+        fine_lavori = self.cleaned_data['fine_lavori']
         studio_intervento = self.cleaned_data['studio_intervento'].text
         if studio_intervento == 'INTERVENTO':
             if (mesi_fine_lavori is None or mesi_fine_lavori == 0) and not isinstance(fine_lavori, datetime.date):
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
         return mesi_fine_lavori
-    
+
     def clean_elaborati_progettuali(self):
         elaborati_progettuali = self.cleaned_data['elaborati_progettuali']
         studio_intervento = self.cleaned_data['studio_intervento'].text
         if studio_intervento == 'INTERVENTO':
             if elaborati_progettuali is None:
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Devi inserire gli Elaborati Progettuali!")
-        return elaborati_progettuali  
-        
+        return elaborati_progettuali
+
     def clean_descrizione_elaborati_prog(self):
         descrizione_elaborati_prog = self.cleaned_data['descrizione_elaborati_prog']
         studio_intervento = self.cleaned_data['studio_intervento'].text
@@ -245,7 +245,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
             if strip_text == "":
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Devi inserire l'elenco degli Elaborati Progettuali!")
         return descrizione_elaborati_prog
-        
+
     def clean_elenco_pareri(self):
         elenco_pareri = self.cleaned_data['elenco_pareri'].strip()
         studio_intervento = self.cleaned_data['studio_intervento'].text
@@ -257,7 +257,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     ################################################################################
     #PARTE DI VALIDAZIONE PER I CAMPI CORRELATI A "Intervento con opere accessorie"#
     ################################################################################
-    
+
     def clean_presenza_vincoli_sovraordinati(self):
         presenza_vincoli_sovraordinati = self.cleaned_data['presenza_vincoli_sovraordinati']
         intervento_opere_accessorie = self.cleaned_data['intervento_opere_accessorie']
@@ -266,7 +266,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
             if presenza_vincoli_sovraordinati is None:
                 raise forms.ValidationError("Hai selezionato Intervento con opere accessorie. Il campo Presenza di vincoli sovraordinati è obbligatorio!")
         return presenza_vincoli_sovraordinati
-        
+
     def clean_desc_opere_acc_strum(self):
         desc_opere_acc_strum = self.cleaned_data['desc_opere_acc_strum'].strip()
         intervento_opere_accessorie = self.cleaned_data['intervento_opere_accessorie']
@@ -274,7 +274,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'INTERVENTO' and intervento_opere_accessorie == True:
             if desc_opere_acc_strum == "":
                 raise forms.ValidationError("Hai selezionato Intervento con opere accessorie. Il campo Descrizione delle opere accessorie strumentali è obbligatorio!")
-        return desc_opere_acc_strum        
+        return desc_opere_acc_strum
 
     def clean_importo_opere_accessorie_strumentali(self):
         importo_opere_accessorie_strumentali = self.cleaned_data['importo_opere_accessorie_strumentali']
@@ -306,7 +306,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
     ###########################################################################################
     #PARTE DI VALIDAZIONE PER I CAMPI CORRELATI A "intervento_opere_mitigazione_compensazione"#
     ###########################################################################################
-    
+
     def clean_desc_int_opere_mitig_comp(self):
         desc_int_opere_mitig_comp = self.cleaned_data['desc_int_opere_mitig_comp'].strip()
         intervento_opere_mitigazione_compensazione = self.cleaned_data['intervento_opere_mitigazione_compensazione']
@@ -314,7 +314,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'INTERVENTO' and intervento_opere_mitigazione_compensazione == True:
             if desc_int_opere_mitig_comp == "":
                 raise forms.ValidationError("Hai selezionato Intervento con opere di mitigazione o compensazione ambientale. Il campo Descrizione delle opere accessorie strumentali è obbligatorio!")
-        return desc_int_opere_mitig_comp    
+        return desc_int_opere_mitig_comp
 
     def clean_importo_opere_mitig_comp(self):
         importo_opere_mitig_comp = self.cleaned_data['importo_opere_mitig_comp']
@@ -324,7 +324,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
             if importo_opere_mitig_comp is None:
                 raise forms.ValidationError("Hai selezionato Intervento con opere di mitigazione o compensazione ambientale. Il campo Importo delle opere di mitigazione o compensazione ambientale è obbligatorio!")
         return importo_opere_mitig_comp
-        
+
     # PARTE DI CONTROLLOIN CASO DI PROGETTO/STUDIO MODIFICARE PER IL NUOVO CAMPO
     def clean_allegato_documento_preliminare(self):
         allegato_documento_preliminare = self.cleaned_data['allegato_documento_preliminare']
@@ -342,7 +342,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'PROGETTO/STUDIO':
             if (mesi_conclusione_relazione_finale is None or mesi_conclusione_relazione_finale == 0) and not isinstance(conclusione_relazione_finale, datetime.date):
                 raise forms.ValidationError("Hai selezionato PROGETTO/STUDIO. Questo campo e obbligatorio!")
-        return mesi_conclusione_relazione_finale      
+        return mesi_conclusione_relazione_finale
 
     # PARTE DI CONTROLLO IN CASO DI INTERVENTO PER IL FIELDSET VALUTAZIONE
     def clean_cantierabilita(self):
@@ -359,7 +359,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'INTERVENTO':
             if variante_urbanistica is None:
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
-        return variante_urbanistica         
+        return variante_urbanistica
 
     def clean_valutazione_impatto_ambientale(self):
         valutazione_impatto_ambientale = self.cleaned_data['valutazione_impatto_ambientale']
@@ -367,7 +367,7 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if studio_intervento == 'INTERVENTO':
             if valutazione_impatto_ambientale is None:
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
-        return valutazione_impatto_ambientale         
+        return valutazione_impatto_ambientale
 
     def clean_esproprio(self):
         esproprio = self.cleaned_data['esproprio']
@@ -384,21 +384,21 @@ class CronoprogrammaAdminForm(forms.ModelForm):
             if sostenibilita is None:
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
         return sostenibilita
-        
+
     def clean_tipologia_intervento(self):
         tipologia_intervento = self.cleaned_data['tipologia_intervento']
         studio_intervento = self.cleaned_data['studio_intervento'].text
         if studio_intervento == 'INTERVENTO':
             if tipologia_intervento is None:
                 raise forms.ValidationError("Hai selezionato INTERVENTO. Questo campo e obbligatorio!")
-        return tipologia_intervento       
+        return tipologia_intervento
 
     def clean_cat_int(self):
         categoria_intervento = self.cleaned_data['cat_int']
         if categoria_intervento is None:
             raise forms.ValidationError("Questo campo e obbligatorio!")
-        return categoria_intervento      
-        
+        return categoria_intervento
+
     def clean_area_vasta_rif(self):
         area_vasta = self.cleaned_data['area_vasta_rif']
         try:
@@ -408,8 +408,8 @@ class CronoprogrammaAdminForm(forms.ModelForm):
             if categoria_intervento == '02' and strip_text == "":
                 raise forms.ValidationError("Hai selezionato 'Interventi complessi di area vasta'. La compilazione è obbligatoria!")
         except KeyError:
-            return area_vasta          
-        
+            return area_vasta
+
     def clean_codice_pericolosita_adb_pai(self):
         codice_pericolosita_adb_pai = self.cleaned_data['codice_pericolosita_adb_pai']
         perimetrazione_autorita_di_bacino = self.cleaned_data['perimetrazione_autorita_di_bacino']
@@ -417,8 +417,8 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if perimetrazione_autorita_di_bacino is True:
             if strip_text == "":
                 raise forms.ValidationError("Hai selezionato Perimetrazione Autorita di Bacino. Questo campo e obbligatorio!")
-        return codice_pericolosita_adb_pai          
-        
+        return codice_pericolosita_adb_pai
+
     def clean_allegato_atto_valutazione(self):
         atto_valutazione = self.cleaned_data['atto_valutazione']
         allegato_atto_valutazione = self.cleaned_data['allegato_atto_valutazione']
@@ -433,16 +433,25 @@ class CronoprogrammaAdminForm(forms.ModelForm):
         if atto_nomina_rup == True:
             if (allegato_atto_nomina_rup is None):
                 raise forms.ValidationError("Hai indicato che è presente l'Atto di nomina del RUP! Inserisci l'allegato")
-        return allegato_atto_nomina_rup        
+        return allegato_atto_nomina_rup
+
+    def clean_estremi_atto_fin(self):
+        int_fin_tot_acq = self.cleaned_data['int_fin_tot_acq']
+        estremi_atto_fin = self.cleaned_data['estremi_atto_fin']
+        strip_text = estremi_atto_fin.strip()
+        if int_fin_tot_acq == True:
+            if strip_text == "":
+                raise forms.ValidationError("Hai indicato che l'intervento ha un finanziamento totale già acquisito! Questo campo è obbligatorio!")
+        return estremi_atto_fin
 
 def export_pdf_single(modeladmin, request, queryset, cod = None):
-    
+
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Studi_Intervento_Livorno.pdf"'
 
     buffer = BytesIO()
-    
+
     #p = canvas.Canvas(buffer)
     p = SimpleDocTemplate(buffer,pagesize=A4)
     styles = getSampleStyleSheet()
@@ -451,11 +460,11 @@ def export_pdf_single(modeladmin, request, queryset, cod = None):
     I = Image('http://159.213.57.81/static/admin/images/logoregione.png')
     Catalog.append(I)
     style = styles["BodyText"]
-    style.alignment = TA_LEFT      
+    style.alignment = TA_LEFT
 
     header = Paragraph('''<para align=center spaceb=3><b><font color=red >Studi e Interventi Livorno</font></b></para>''', style)
     Catalog.append(header)
-    
+
     headings = ('Attributo', 'Valore')
     allproducts = []
 
@@ -492,7 +501,7 @@ def export_pdf_single(modeladmin, request, queryset, cod = None):
             allproducts.append([Paragraph(smart_str(u"ente_attuatore_competente"),style),Paragraph(smart_str(obj.ente_attuatore_competente),style)])
             allproducts.append([Paragraph(smart_str(u"nominativo"),style),Paragraph(smart_str(obj.nominativo),style)])
             allproducts.append([Paragraph(smart_str(u"email"),style),Paragraph(smart_str(obj.email),style)])
-            allproducts.append([Paragraph(smart_str(u"recapito_telefonico"),style),Paragraph(smart_str(obj.recapito_telefonico),style)])            
+            allproducts.append([Paragraph(smart_str(u"recapito_telefonico"),style),Paragraph(smart_str(obj.recapito_telefonico),style)])
             allproducts.append([Paragraph(smart_str(u"interventi_correlati"),style),Paragraph(smart_str(obj.interventi_correlati),style)])
             allproducts.append([Paragraph(smart_str(u"stralcio_funzionale"),style),Paragraph(smart_str(obj.stralcio_funzionale),style)])
             allproducts.append([Paragraph(smart_str(u"accordo_di_programma"),style),Paragraph(smart_str(obj.accordo_di_programma),style)])
@@ -538,7 +547,7 @@ def export_pdf_single(modeladmin, request, queryset, cod = None):
             allproducts.append([Paragraph(smart_str(u"importo_totale_intervento"),style),Paragraph(smart_str(obj.importo_totale_intervento),style)])
             allproducts.append([Paragraph(smart_str(u"importo_richiesto"),style),Paragraph(smart_str(obj.importo_richiesto),style)])
             allproducts.append([Paragraph(smart_str(u"importo_cofinanziato_altri"),style),Paragraph(smart_str(obj.importo_cofinanziato_altri),style)])
-            allproducts.append([Paragraph(smart_str(u"ente_cofinanziatore"),style),Paragraph(smart_str(obj.ente_cofinanziatore),style)])            
+            allproducts.append([Paragraph(smart_str(u"ente_cofinanziatore"),style),Paragraph(smart_str(obj.ente_cofinanziatore),style)])
             allproducts.append([Paragraph(smart_str(u"efficacia"),style),Paragraph(smart_str(obj.efficacia),style)])
             #allproducts.append([Paragraph(smart_str(u"efficacia_val"),style),Paragraph(smart_str(obj.efficacia_val),style)])
             allproducts.append([Paragraph(smart_str(u"cantierabilita"),style),Paragraph(smart_str(obj.cantierabilita),style)])
@@ -558,8 +567,10 @@ def export_pdf_single(modeladmin, request, queryset, cod = None):
             allproducts.append([Paragraph(smart_str(u"Geni_civili_02_2016"),style),Paragraph(smart_str(obj.nuovi_geni_civili),style)])
             allproducts.append([Paragraph(smart_str(u"priorita"),style),Paragraph(smart_str(obj.priorita),style)])
             allproducts.append([Paragraph(smart_str(u"codice_rendis"),style),Paragraph(smart_str(obj.codice_rendis),style)])
+            allproducts.append([Paragraph(smart_str(u"int_fin_tot_acq"),style),Paragraph(smart_str(obj.int_fin_tot_acq),style)])
+            allproducts.append([Paragraph(smart_str(u"estremi_atto_fin"),style),Paragraph(smart_str(obj.estremi_atto_fin),style)])
             allproducts.append([Paragraph(smart_str(u"data_trasmissione_istruttoria"),style),Paragraph(smart_str(obj.data_trasmissione_istruttoria),style)])
-            
+
             #if request.user.is_superuser:
                 #allproducts.append([smart_str(u"a_finanziamento"),Paragraph(smart_str(obj.a_finanziamento),style)])
 
@@ -573,15 +584,15 @@ def export_pdf_single(modeladmin, request, queryset, cod = None):
     buffer.close()
     response.write(pdf)
     return pdf
-    
+
 def export_pdf(modeladmin, request, queryset):
-    
+
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Studi_Intervento_Livorno.pdf"'
 
     buffer = BytesIO()
-    
+
     #p = canvas.Canvas(buffer)
     p = SimpleDocTemplate(buffer,pagesize=A4)
     styles = getSampleStyleSheet()
@@ -592,34 +603,34 @@ def export_pdf(modeladmin, request, queryset):
 
     Catalog.append(I)
     style = styles["BodyText"]
-    style.alignment = TA_LEFT   
+    style.alignment = TA_LEFT
 
     header = Paragraph('''<para align=center spaceb=3><b><font color=red >Studi e Interventi Livorno</font></b></para>''', style)
     Catalog.append(header)
-    
+
     headings = ('Attributo', 'Valore')
     allproducts = []
 
     for obj in queryset:
         #pnt = GEOSGeometry(obj.fenomeno_aggiunto)
-    
+
         #left = pnt.extent[0] - 220
         #bottom = pnt.extent[1] - 220
         #right = pnt.extent[2] + 220
-        #top = pnt.extent[3] + 220        
+        #top = pnt.extent[3] + 220
 
-        #ORTOFOTO = Image('http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc&LAYERS=rt_ofc.10k13&VERSION=1.3.0&FORMAT=image%2Fpng&TRANSPARENT=true&BGCOLOR=%23FFFFFF&EXCEPTIONS=INIMAGE&SERVICE=WMS&REQUEST=GetMap&STYLES=&CRS=EPSG%3A3003&BBOX=' + smart_str(left) + ',' + smart_str(bottom) + ',' + smart_str(right) + ',' + smart_str(top) + '&WIDTH=220&HEIGHT=220')    
+        #ORTOFOTO = Image('http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc&LAYERS=rt_ofc.10k13&VERSION=1.3.0&FORMAT=image%2Fpng&TRANSPARENT=true&BGCOLOR=%23FFFFFF&EXCEPTIONS=INIMAGE&SERVICE=WMS&REQUEST=GetMap&STYLES=&CRS=EPSG%3A3003&BBOX=' + smart_str(left) + ',' + smart_str(bottom) + ',' + smart_str(right) + ',' + smart_str(top) + '&WIDTH=220&HEIGHT=220')
         #ORTOFOTO.drawHeight = 220
         #ORTOFOTO.drawWidth = 220
-        
-        #ORTOFOTOP = Paragraph('''<para align=center spaceb=3>The <b>ReportLab Left<font color=red>Logo</font></b>ORTOFOTO</para>''',style)    
-        
+
+        #ORTOFOTOP = Paragraph('''<para align=center spaceb=3>The <b>ReportLab Left<font color=red>Logo</font></b>ORTOFOTO</para>''',style)
+
         #WMS = Image('http://159.213.57.81/geoserver/wms?LAYERS=db_segnalazioni:genio_civile_pisa_view&VERSION=1.3.0&FORMAT=image/png&TRANSPARENT=true&SERVICE=WMS&REQUEST=GetMap&STYLES=&CRS=EPSG:3003&BBOX=' + smart_str(left) + ',' + smart_str(bottom) + ',' + smart_str(right) + ',' + smart_str(top) + '&WIDTH=220&HEIGHT=220')
         #WMS.drawHeight = 220
-        #WMS.drawWidth = 220        
-        
+        #WMS.drawWidth = 220
+
         #WMSP = Paragraph('''<para align=center spaceb=3>The <b>ReportLab Left<font color=red>Logo</font></b>WMS</para>''', style)
-        
+
         allproducts.append([Paragraph(smart_str(u"codice_intervento"),style),Paragraph(smart_str(obj.codice_intervento),style)])
         allproducts.append([Paragraph(smart_str(u"bacino_idrografico"),style),Paragraph(smart_str(obj.bacino_idrografico),style)])
         allproducts.append([Paragraph(smart_str(u"comprensorio"),style),Paragraph(smart_str(obj.comprensorio),style)])
@@ -651,7 +662,7 @@ def export_pdf(modeladmin, request, queryset):
         allproducts.append([Paragraph(smart_str(u"ente_attuatore_competente"),style),Paragraph(smart_str(obj.ente_attuatore_competente),style)])
         allproducts.append([Paragraph(smart_str(u"nominativo"),style),Paragraph(smart_str(obj.nominativo),style)])
         allproducts.append([Paragraph(smart_str(u"email"),style),Paragraph(smart_str(obj.email),style)])
-        allproducts.append([Paragraph(smart_str(u"recapito_telefonico"),style),Paragraph(smart_str(obj.recapito_telefonico),style)])            
+        allproducts.append([Paragraph(smart_str(u"recapito_telefonico"),style),Paragraph(smart_str(obj.recapito_telefonico),style)])
         allproducts.append([Paragraph(smart_str(u"interventi_correlati"),style),Paragraph(smart_str(obj.interventi_correlati),style)])
         allproducts.append([Paragraph(smart_str(u"stralcio_funzionale"),style),Paragraph(smart_str(obj.stralcio_funzionale),style)])
         allproducts.append([Paragraph(smart_str(u"accordo_di_programma"),style),Paragraph(smart_str(obj.accordo_di_programma),style)])
@@ -697,7 +708,7 @@ def export_pdf(modeladmin, request, queryset):
         allproducts.append([Paragraph(smart_str(u"importo_totale_intervento"),style),Paragraph(smart_str(obj.importo_totale_intervento),style)])
         allproducts.append([Paragraph(smart_str(u"importo_richiesto"),style),Paragraph(smart_str(obj.importo_richiesto),style)])
         allproducts.append([Paragraph(smart_str(u"importo_cofinanziato_altri"),style),Paragraph(smart_str(obj.importo_cofinanziato_altri),style)])
-        allproducts.append([Paragraph(smart_str(u"ente_cofinanziatore"),style),Paragraph(smart_str(obj.ente_cofinanziatore),style)])            
+        allproducts.append([Paragraph(smart_str(u"ente_cofinanziatore"),style),Paragraph(smart_str(obj.ente_cofinanziatore),style)])
         allproducts.append([Paragraph(smart_str(u"efficacia"),style),Paragraph(smart_str(obj.efficacia),style)])
         allproducts.append([Paragraph(smart_str(u"efficacia_val"),style),Paragraph(smart_str(obj.efficacia_val),style)])
         allproducts.append([Paragraph(smart_str(u"cantierabilita"),style),Paragraph(smart_str(obj.cantierabilita),style)])
@@ -717,13 +728,15 @@ def export_pdf(modeladmin, request, queryset):
         allproducts.append([Paragraph(smart_str(u"Geni_civili_02_2016"),style),Paragraph(smart_str(obj.nuovi_geni_civili),style)])
         allproducts.append([Paragraph(smart_str(u"priorita"),style),Paragraph(smart_str(obj.priorita),style)])
         allproducts.append([Paragraph(smart_str(u"codice_rendis"),style),Paragraph(smart_str(obj.codice_rendis),style)])
+        allproducts.append([Paragraph(smart_str(u"int_fin_tot_acq"),style),Paragraph(smart_str(obj.int_fin_tot_acq),style)])
+        allproducts.append([Paragraph(smart_str(u"estremi_atto_fin"),style),Paragraph(smart_str(obj.estremi_atto_fin),style)])
         allproducts.append([Paragraph(smart_str(u"data_trasmissione_istruttoria"),style),Paragraph(smart_str(obj.data_trasmissione_istruttoria),style)])
-        
+
         #if request.user.is_superuser:
             #allproducts.append([smart_str(u"a_finanziamento"),Paragraph(smart_str(obj.a_finanziamento),style)])
-        
+
         t = Table([headings] + allproducts,[150,350])
-        
+
         t.setStyle(TableStyle([
             (
                 'GRID',
@@ -746,13 +759,13 @@ def export_pdf(modeladmin, request, queryset):
                 colors.pink
             )
         ]))
-            
+
         Catalog.append(t)
-        
-        Catalog.append(PageBreak())     
+
+        Catalog.append(PageBreak())
 
         allproducts = []
-        
+
     p.build(Catalog)
 
     # Get the value of the BytesIO buffer and write it to the response.
@@ -804,7 +817,7 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"ente_attuatore_competente"),
         smart_str(u"nominativo"),
         smart_str(u"email"),
-        smart_str(u"recapito_telefonico"),        
+        smart_str(u"recapito_telefonico"),
         smart_str(u"interventi_correlati"),
         smart_str(u"stralcio_funzionale"),
         smart_str(u"accordo_di_programma"),
@@ -830,8 +843,8 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"elaborati_progettuali"),
         smart_str(u"descrizione_elaborati_prog"),
         smart_str(u"allegato_documento_preliminare"),
-        smart_str(u"conclusione_relazione_finale"),           
-        smart_str(u"mesi_conclusione_relazione_finale"),     
+        smart_str(u"conclusione_relazione_finale"),
+        smart_str(u"mesi_conclusione_relazione_finale"),
         smart_str(u"elenco_pareri"),
         smart_str(u"atto_valutazione"),
         smart_str(u"allegato_atto_valutazione"),
@@ -846,7 +859,7 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"importo_opere_accessorie_no_strumentali"),
         smart_str(u"intervento_opere_mitigazione_compensazione"),
         smart_str(u"desc_int_opere_mitig_comp"),
-        smart_str(u"importo_opere_mitig_comp"),        
+        smart_str(u"importo_opere_mitig_comp"),
         smart_str(u"importo_totale_intervento"),
         smart_str(u"importo_richiesto"),
         smart_str(u"importo_cofinanziato_altri"),
@@ -870,18 +883,20 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"Geni_civili_02_2016"),
         smart_str(u"priorita"),
         smart_str(u"codice_rendis"),
+        smart_str(u"int_fin_tot_acq"),
+        smart_str(u"estremi_atto_fin"),
         smart_str(u"data_trasmissione_istruttoria"),
         #smart_str(u"a_finanziamento") if request.user.is_superuser else smart_str(u""),
         #smart_str(u"nuovi_geni_civili") if request.user.is_superuser else smart_str(u""),
     ])
-    
+
     #if request.user.is_superuser:
     #    writer.writerow([
     #        smart_str(u"a_finanziamento"),
     #    ])
-        
+
     for obj in queryset:
-    
+
         pnt = GEOSGeometry(obj.fenomeno_aggiunto, 3003)
         coords = pnt.coords
         coord_x = coords[0]
@@ -890,7 +905,7 @@ def export_csv(modeladmin, request, queryset):
         newCoords = newGem.coords
         lon = newCoords[0]
         lat = newCoords[1]
-        
+
         writer.writerow([
             smart_str(obj.codice_intervento),
             smart_str(obj.bacino_idrografico),
@@ -927,7 +942,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.ente_attuatore_competente),
             smart_str(obj.nominativo),
             smart_str(obj.email),
-            smart_str(obj.recapito_telefonico),            
+            smart_str(obj.recapito_telefonico),
             smart_str(obj.interventi_correlati),
             smart_str(obj.stralcio_funzionale),
             smart_str(obj.accordo_di_programma),
@@ -953,7 +968,7 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.elaborati_progettuali),
             smart_str(obj.descrizione_elaborati_prog),
             smart_str(obj.allegato_documento_preliminare),
-            smart_str(obj.conclusione_relazione_finale),            
+            smart_str(obj.conclusione_relazione_finale),
             smart_str(obj.mesi_conclusione_relazione_finale),
             smart_str(obj.elenco_pareri),
             smart_str(obj.atto_valutazione),
@@ -993,16 +1008,18 @@ def export_csv(modeladmin, request, queryset):
             smart_str(obj.nuovi_geni_civili),
             smart_str(obj.priorita),
             smart_str(obj.codice_rendis),
+            smart_str(obj.int_fin_tot_acq),
+            smart_str(obj.estremi_atto_fin),
             smart_str(obj.data_trasmissione_istruttoria),
             #smart_str(obj.a_finanziamento) if request.user.is_superuser else smart_str(""),
             #smart_str(obj.nuovi_geni_civili) if request.user.is_superuser else smart_str(""),
         ])
-        
+
         #if request.user.is_superuser:
         #    writer.writerow([
         #        smart_str(obj.a_finanziamento),
-        #    ])        
-            
+        #    ])
+
     return response
 export_csv.short_description = u"Esporta nel formato CSV"
 
@@ -1012,9 +1029,9 @@ def export_xls(modeladmin, request, queryset):
     response['Content-Disposition'] = 'attachment; filename=studi_interventi_livorno.xls'
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet("Studi e Interventi Firenze")
-    
+
     row_num = 0
-    
+
     columns = [
         (u"codice_intervento", 8000),
         (u"bacino_idrografico", 8000),
@@ -1051,7 +1068,7 @@ def export_xls(modeladmin, request, queryset):
         (u"ente_attuatore_competente", 8000),
         (u"nominativo", 8000),
         (u"email", 8000),
-        (u"recapito_telefonico", 8000),        
+        (u"recapito_telefonico", 8000),
         (u"interventi_correlati", 8000),
         (u"stralcio_funzionale", 8000),
         (u"accordo_di_programma", 8000),
@@ -1077,7 +1094,7 @@ def export_xls(modeladmin, request, queryset):
         (u"elaborati_progettuali", 8000),
         (u"descrizione_elaborati_prog", 8000),
         (u"allegato_documento_preliminare", 8000),
-        (u"conclusione_relazione_finale", 8000),        
+        (u"conclusione_relazione_finale", 8000),
         (u"mesi_conclusione_relazione_finale", 8000),
         (u"elenco_pareri", 8000),
         (u"atto_valutazione", 8000),
@@ -1117,12 +1134,14 @@ def export_xls(modeladmin, request, queryset):
         (u"Geni_civili_02_2016", 8000),
         (u"priorita", 8000),
         (u"codice_rendis", 8000),
+        (u"int_fin_tot_acq", 8000),
+        (u"estremi_atto_fin", 8000),
         (u"data_trasmissione_istruttoria", 8000),
     ]
 
     #if request.user.is_superuser:
         #columns.append((u"a_finanziamento", 8000)),
-        
+
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
@@ -1133,9 +1152,9 @@ def export_xls(modeladmin, request, queryset):
 
     font_style = xlwt.XFStyle()
     font_style.alignment.wrap = 1
-    
+
     for obj in queryset:
-    
+
         pnt = GEOSGeometry(obj.fenomeno_aggiunto, 3003)
         coords = pnt.coords
         coord_x = coords[0]
@@ -1144,7 +1163,7 @@ def export_xls(modeladmin, request, queryset):
         newCoords = newGem.coords
         lon = newCoords[0]
         lat = newCoords[1]
-        
+
         row_num += 1
         row = [
             smart_str(obj.codice_intervento),
@@ -1183,7 +1202,7 @@ def export_xls(modeladmin, request, queryset):
             smart_str(obj.ente_attuatore_competente),
             smart_str(obj.nominativo),
             smart_str(obj.email),
-            smart_str(obj.recapito_telefonico),            
+            smart_str(obj.recapito_telefonico),
             smart_str(obj.interventi_correlati),
             smart_str(obj.stralcio_funzionale),
             smart_str(obj.accordo_di_programma),
@@ -1209,7 +1228,7 @@ def export_xls(modeladmin, request, queryset):
             smart_str(obj.elaborati_progettuali),
             smart_str(obj.descrizione_elaborati_prog),
             smart_str(obj.allegato_documento_preliminare),
-            smart_str(obj.conclusione_relazione_finale),            
+            smart_str(obj.conclusione_relazione_finale),
             smart_str(obj.mesi_conclusione_relazione_finale),
             smart_str(obj.elenco_pareri),
             smart_str(obj.atto_valutazione),
@@ -1231,7 +1250,7 @@ def export_xls(modeladmin, request, queryset):
             #smart_str(obj.importo_cofinanziato_altri),
             float(smart_str(obj.importo_totale_intervento)),
             float(smart_str(obj.importo_richiesto)),
-            float(smart_str(obj.importo_cofinanziato_altri)),            
+            float(smart_str(obj.importo_cofinanziato_altri)),
             smart_str(obj.ente_cofinanziatore),
             smart_str(obj.efficacia),
             float(smart_str(obj.efficacia_val)) if obj.efficacia_val else 0,
@@ -1249,23 +1268,25 @@ def export_xls(modeladmin, request, queryset):
             smart_str(obj.conclusione_istruttoria),
             smart_str(obj.nominativo_compilatore),
             smart_str(obj.email_comp),
-            smart_str(obj.nuovi_geni_civili),            
+            smart_str(obj.nuovi_geni_civili),
             smart_str(obj.priorita),
             smart_str(obj.codice_rendis),
+            smart_str(obj.int_fin_tot_acq),
+            smart_str(obj.estremi_atto_fin),
             smart_str(obj.data_trasmissione_istruttoria),
         ]
-        
+
         #if request.user.is_superuser:
             #row.append(smart_str(obj.a_finanziamento)),
-                
+
         for col_num in xrange(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
-            
+
     wb.save(response)
     return response
-    
+
 export_xls.short_description = u"Esporta nel formato XLS"
-        
+
 class InterventoAdmin(GeoModelAdmin):
 
     @register.inclusion_tag('admin/submit_line.html', takes_context=True)
@@ -1276,17 +1297,17 @@ class InterventoAdmin(GeoModelAdmin):
         ctx = {
             'show_save_and_mail': True,
         }
-            
+
         return ctx
 
     def response_change(self, request, obj):
-        """ custom method that cacthes a new 'save and edit next' action 
+        """ custom method that cacthes a new 'save and edit next' action
             Remember that the type of 'obj' is the current model instance, so we can use it dynamically!
         """
         opts = self.model._meta
         pk_value = obj._get_pk_val()
         preserved_filters = self.get_preserved_filters(request)
-        
+
         emailTextTitle = 'Documento Operativo per la Difesa del Suolo LR 80/2015'
 
         msg_dict = {'name': force_text(opts.verbose_name), 'obj': force_text(obj)}
@@ -1296,14 +1317,14 @@ class InterventoAdmin(GeoModelAdmin):
             #msg = ("""Email spedita correttamente.""")
             msg = _('%(name)s "%(obj)s" modificato correttamente. Email spedita correttamente') % msg_dict
             self.message_user(request, msg, messages.SUCCESS)
-            
+
             obj.conclusione_istruttoria = True
-            
+
             #updates the date of transmission
             obj.data_trasmissione_istruttoria = datetime.datetime.now()
-                
+
             obj.save()
-            
+
             newQueryset = Intervento.objects.all()
             #if obj.conclusione_istruttoria is True:
             email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente", 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it',obj.email,obj.email_comp,obj.bacino_idrografico.email],['mari@lamma.rete.toscana.it'])
@@ -1315,37 +1336,37 @@ class InterventoAdmin(GeoModelAdmin):
             #msg = ("""Email spedita correttamente.""")
             msg = _('%(name)s "%(obj)s" modificato correttamente.') % msg_dict
             self.message_user(request, msg, messages.SUCCESS)
-            
+
             obj.conclusione_istruttoria = True
-            
+
             #updates the date of transmission
             obj.data_trasmissione_istruttoria = datetime.datetime.now()
-            
+
             obj.save()
-            
+
             newQueryset = Intervento.objects.all()
             #if obj.conclusione_istruttoria is True:
             if not request.user.is_superuser:
                 email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente" , 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it'],['mari@lamma.rete.toscana.it'])
                 email.attach(str(obj.codice_intervento)+'_segnalazione.pdf',export_pdf_single(obj, request, newQueryset, cod = obj.codice_intervento),'application/pdf')
                 email.send(fail_silently=False)
-                return self.response_post_save_change(request, obj)            
+                return self.response_post_save_change(request, obj)
             else:
                 email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente" , 'dbsegnalazioni@lamma.rete.toscana.it',['mari@lamma.rete.toscana.it'])
                 email.attach(str(obj.codice_intervento)+'_segnalazione.pdf',export_pdf_single(obj, request, newQueryset, cod = obj.codice_intervento),'application/pdf')
-                email.send(fail_silently=False)            
-                return self.response_post_save_change(request, obj)            
+                email.send(fail_silently=False)
+                return self.response_post_save_change(request, obj)
         else:
-            return super(InterventoAdmin, self).response_change(request, obj)  
-            
+            return super(InterventoAdmin, self).response_change(request, obj)
+
     def response_add(self, request, obj):
-        """ custom method that cacthes a new 'save and edit next' action 
+        """ custom method that cacthes a new 'save and edit next' action
             Remember that the type of 'obj' is the current model instance, so we can use it dynamically!
         """
         opts = self.model._meta
         pk_value = obj._get_pk_val()
         preserved_filters = self.get_preserved_filters(request)
-        
+
         emailTextTitle = 'Documento Operativo per la Difesa del Suolo LR 80/2015'
 
         msg_dict = {'name': force_text(opts.verbose_name), 'obj': force_text(obj)}
@@ -1355,14 +1376,14 @@ class InterventoAdmin(GeoModelAdmin):
             #msg = ("""Email spedita correttamente.""")
             msg = _('%(name)s "%(obj)s" modificato correttamente. Email spedita correttamente') % msg_dict
             self.message_user(request, msg, messages.SUCCESS)
-            
+
             obj.conclusione_istruttoria = True
-            
+
             #updates the date of transmission
             obj.data_trasmissione_istruttoria = datetime.datetime.now()
-                
+
             obj.save()
-            
+
             newQueryset = Intervento.objects.all()
             #if obj.conclusione_istruttoria is True:
             email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente", 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it',obj.email,obj.email_comp,obj.bacino_idrografico.email],['mari@lamma.rete.toscana.it'])
@@ -1374,29 +1395,29 @@ class InterventoAdmin(GeoModelAdmin):
             #msg = ("""Email spedita correttamente.""")
             msg = _('%(name)s "%(obj)s" modificato correttamente.') % msg_dict
             self.message_user(request, msg, messages.SUCCESS)
-            
+
             obj.conclusione_istruttoria = True
 
             #updates the date of transmission
             obj.data_trasmissione_istruttoria = datetime.datetime.now()
-            
+
             obj.save()
-            
+
             newQueryset = Intervento.objects.all()
             #if obj.conclusione_istruttoria is True:
             if not request.user.is_superuser:
                 email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente" , 'dbsegnalazioni@lamma.rete.toscana.it',['documento-annuale-difesa-suolo@regione.toscana.it'],['mari@lamma.rete.toscana.it'])
                 email.attach(str(obj.codice_intervento)+'_segnalazione.pdf',export_pdf_single(obj, request, newQueryset, cod = obj.codice_intervento),'application/pdf')
                 email.send(fail_silently=False)
-                return self.response_post_save_add(request, obj)            
+                return self.response_post_save_add(request, obj)
             else:
                 email = EmailMessage(emailTextTitle+'-trasmissione istruttoria', "CODICE INTERVENTO: " + str(obj.codice_intervento) + "\r\rSi comunica che l'Ufficio Tecnico del Genio Civile ha completato l'istruttoria relativa all'intervento/studio sopra indicato, comprensiva del punteggio provvisoriamente assegnato, ai fini della redazione del "+emailTextTitle+". \r\rSi prega pertanto di prendere visione dell'istruttoria allegata alla presente. \rEventuali osservazioni e modifiche debbono essere trasmesse entro 7 giorni dal ricevimento della presente ai destinatari della presente mail. \r\rE' possibile vedere l'intervento georeferenziato all'indirizzo http://geoportale.lamma.rete.toscana.it/segnalazioni/index.html?codint="+str(obj.codice_intervento)+" \r\rDistinti saluti \r\rUfficio Tecnico Genio civile Territorialmente competente" , 'dbsegnalazioni@lamma.rete.toscana.it',['mari@lamma.rete.toscana.it'])
                 email.attach(str(obj.codice_intervento)+'_segnalazione.pdf',export_pdf_single(obj, request, newQueryset, cod = obj.codice_intervento),'application/pdf')
-                email.send(fail_silently=False)            
-                return self.response_post_save_add(request, obj)            
+                email.send(fail_silently=False)
+                return self.response_post_save_add(request, obj)
         else:
-            return super(InterventoAdmin, self).response_add(request, obj)        
-            
+            return super(InterventoAdmin, self).response_add(request, obj)
+
     actions = [export_csv,export_xls,export_pdf]
 
     def get_actions(self, request):
@@ -1405,16 +1426,16 @@ class InterventoAdmin(GeoModelAdmin):
             if 'export_csv' in actions:
                 del actions['export_csv']
             if 'export_xls' in actions:
-                del actions['export_xls']                
-        return actions  
-        
+                del actions['export_xls']
+        return actions
+
     class Media:
         from django.conf import settings
         static_url = getattr(settings, 'STATIC_URL', '/static')
         js = [ static_url+'admin/js/update_record.js', ]
-        
+
     form = CronoprogrammaAdminForm
-    
+
     options = {
         'layers': [
             'geoscopio_intorno_toscana',
@@ -1431,14 +1452,14 @@ class InterventoAdmin(GeoModelAdmin):
             'livorno',
         ],
         'default_lon': 1243401.13894,
-        'default_lat': 5387778.59347,        
+        'default_lat': 5387778.59347,
         'defaultZoom': 1,
-    }        
-    
+    }
+
     fieldsets = [
         (
-        'INFORMAZIONI GEOGRAFICHE', 
-            {'fields': 
+        'INFORMAZIONI GEOGRAFICHE',
+            {'fields':
                 [
                 'codice_intervento',
                 'bacino_idrografico',
@@ -1499,22 +1520,22 @@ class InterventoAdmin(GeoModelAdmin):
                 [
                 #'progetto_preliminare',
                 'data_approvazione_progetto_preliminare',
-                'mesi_approvazione_progetto_preliminare',                
+                'mesi_approvazione_progetto_preliminare',
                 'riferimento_determina_approvazione_pp',
                 'allegato_determina_approvazione_pp',
                 #'progetto_definitivo',
                 'data_approvazione_progetto_definitivo',
-                'mesi_approvazione_progetto_definitivo',                
+                'mesi_approvazione_progetto_definitivo',
                 'riferimento_determina_approvazione_pd',
                 'allegato_determina_approvazione_pd',
-                'data_approvazione_progetto_esecutivo',                
+                'data_approvazione_progetto_esecutivo',
                 'mesi_approvazione_progetto_esecutivo',
                 'riferimento_determina_approvazione_pe',
                 'allegato_determina_approvazione_pe',
                 'inizio_lavori',
                 'mesi_inizio_lavori',
                 'fine_lavori',
-                'mesi_fine_lavori',  
+                'mesi_fine_lavori',
                 'elaborati_progettuali',
                 'descrizione_elaborati_prog',
                 'allegato_documento_preliminare',
@@ -1582,6 +1603,8 @@ class InterventoAdmin(GeoModelAdmin):
                 'nuovi_geni_civili',
                 #'priorita',
                 'codice_rendis',
+                'int_fin_tot_acq',
+                'estremi_atto_fin',
                 'data_trasmissione_istruttoria',
                 ]
             }
@@ -1596,14 +1619,14 @@ class InterventoAdmin(GeoModelAdmin):
         #        'classes': ['collapse']
         #    }
         #),
-    ]    
+    ]
 
     readonly_fields = [
         'codice_intervento',
         'conclusione_istruttoria',
         'data_trasmissione_istruttoria',
     ]
-    
+
     #inlines = [
     #    FotoAdminInline,
     #]
@@ -1613,7 +1636,8 @@ class InterventoAdmin(GeoModelAdmin):
         'bacino_idrografico',
         'provincia',
         'comune',
-        'studio_intervento',
+        #'studio_intervento',
+        'titolo_intervento_studio',
         'ente_proponente',
         'importo_totale_intervento',
         'conclusione_istruttoria',
@@ -1622,28 +1646,30 @@ class InterventoAdmin(GeoModelAdmin):
         #'sostenibilita',
         #'added',
         #'updated',
-    )   
-    
+    )
+    ordering = ['-conclusione_istruttoria','-data_trasmissione_istruttoria']
+    list_per_page = 50
+    list_max_show_all = 10000
     list_filter = ['studio_intervento','ente_attuatore_competente','conclusione_istruttoria',]
 
     #search_fields = ['valutazione_impatto_ambientale__text', 'esproprio__text','sostenibilita__text',]
-    
+
     #def get_readonly_fields(self, request, obj=None):
     #    obj.cantierabilita_val = form():
     #        return ('field1', 'field2')
     #    else:
     #        return super(TranslationAdmin, self).get_readonly_fields(request, obj)
-                
+
     def get_fieldsets(self, request, obj = None):
-        fs = super(InterventoAdmin, self).get_fieldsets(request, obj) 
-        
-        # only allow superusers to see/change owner 
+        fs = super(InterventoAdmin, self).get_fieldsets(request, obj)
+
+        # only allow superusers to see/change owner
         informazioni_geografiche=list(fs[0][1]['fields'])
         informazioni_generali=list(fs[1][1]['fields'])
-        cronoprogramma=list(fs[2][1]['fields'])        
+        cronoprogramma=list(fs[2][1]['fields'])
         risorse_economiche=list(fs[3][1]['fields'])
         valutazione=list(fs[4][1]['fields'])
-        conclusione_istruttoria=list(fs[5][1]['fields'])        
+        conclusione_istruttoria=list(fs[5][1]['fields'])
         #regione=list(fs[6][1]['fields'])
 
         if not request.user.is_superuser:
@@ -1657,7 +1683,7 @@ class InterventoAdmin(GeoModelAdmin):
                     ]
         else:
             return fs
-            
+
     def save_model(self, request, obj, form, change):
         queryset = Intervento.objects.all()
         current_year = timezone.now().year
@@ -1671,7 +1697,7 @@ class InterventoAdmin(GeoModelAdmin):
                 obj.allegato_documento_preliminare = None
                 obj.conclusione_relazione_finale = None
                 obj.mesi_conclusione_relazione_finale = None
-                
+
                 obj.conclusione_istruttoria = False
 
                 if obj.progetto_preliminare == False:
@@ -1679,8 +1705,8 @@ class InterventoAdmin(GeoModelAdmin):
                     obj.data_approvazione_progetto_preliminare = None
                     obj.riferimento_determina_approvazione_pp = None
                     obj.allegato_determina_approvazione_pp = None
-                    
-                if obj.progetto_definitivo == False:                    
+
+                if obj.progetto_definitivo == False:
                     obj.mesi_approvazione_progetto_definitivo = None
                     obj.data_approvazione_progetto_definitivo = None
                     obj.riferimento_determina_approvazione_pd = None
@@ -1691,20 +1717,20 @@ class InterventoAdmin(GeoModelAdmin):
 
                 if obj.atto_nomina_rup == False:
                     obj.allegato_atto_nomina_rup = None
-                    
+
                 if obj.intervento_opere_accessorie == False or obj.intervento_opere_accessorie is None:
                     obj.presenza_vincoli_sovraordinati = None
                     obj.desc_opere_acc_strum = None
                     obj.importo_opere_accessorie_strumentali = None
                     obj.desc_opere_acc_no_strum = None
                     obj.importo_opere_accessorie_no_strumentali = None
-                    
+
                 if obj.intervento_opere_mitigazione_compensazione == False or obj.intervento_opere_mitigazione_compensazione is None:
                     obj.desc_int_opere_mitig_comp = None
-                    obj.importo_opere_mitig_comp = None                
-                
+                    obj.importo_opere_mitig_comp = None
+
                 obj.save(force_insert=True)
-                    
+
             else:
                 obj.classe_rischio_pai = None
                 obj.stima_rischio_diretto_attuale = None
@@ -1756,11 +1782,11 @@ class InterventoAdmin(GeoModelAdmin):
                 obj.esproprio_val = None
                 obj.sostenibilita = None
                 obj.sostenibilita_val = None
-                
+
                 obj.conclusione_istruttoria = False
-                
+
                 obj.save(force_insert=True)
-             
+
         else:
             lista_codice_intervento = [self.codice_intervento for self in queryset]
             lista_codice_intervento_trim = [self.codice_intervento[-4:] for self in queryset]
@@ -1769,7 +1795,7 @@ class InterventoAdmin(GeoModelAdmin):
             ultimo_codice_intervento_count = ultimo_codice_intervento
             ultimo_codice_intervento_count_int = int(ultimo_codice_intervento_count)
             ultimo = ['{i:0{width}}'.format(i=i, width=4) for i in range(ultimo_codice_intervento_count_int+1, ultimo_codice_intervento_count_int+2)]
-            
+
             if codLen == 12:
                 codice_intervento = 'DA' + '2014' + 'LI' + ultimo[0]
             else:
@@ -1779,15 +1805,15 @@ class InterventoAdmin(GeoModelAdmin):
             for index in range(len(lista_codice_intervento)):
                 if obj.codice_intervento == lista_codice_intervento[index]:
                     list.insert(0, obj.codice_intervento)
-            
+
             if not list:
                 obj.codice_intervento = codice_intervento
-                
+
                 if obj.studio_intervento.text == 'INTERVENTO':
                     obj.allegato_documento_preliminare = None
                     obj.conclusione_relazione_finale = None
                     obj.mesi_conclusione_relazione_finale = None
-                    
+
                     #because this is the SALVA IN BOZZA button
                     obj.conclusione_istruttoria = False
 
@@ -1796,8 +1822,8 @@ class InterventoAdmin(GeoModelAdmin):
                         obj.data_approvazione_progetto_preliminare = None
                         obj.riferimento_determina_approvazione_pp = None
                         obj.allegato_determina_approvazione_pp = None
-                        
-                    if obj.progetto_definitivo == False:                    
+
+                    if obj.progetto_definitivo == False:
                         obj.mesi_approvazione_progetto_definitivo = None
                         obj.data_approvazione_progetto_definitivo = None
                         obj.riferimento_determina_approvazione_pd = None
@@ -1815,13 +1841,13 @@ class InterventoAdmin(GeoModelAdmin):
                         obj.importo_opere_accessorie_strumentali = None
                         obj.desc_opere_acc_no_strum = None
                         obj.importo_opere_accessorie_no_strumentali = None
-                        
+
                     if obj.intervento_opere_mitigazione_compensazione == False or obj.intervento_opere_mitigazione_compensazione is None:
                         obj.desc_int_opere_mitig_comp = None
-                        obj.importo_opere_mitig_comp = None                         
-                        
+                        obj.importo_opere_mitig_comp = None
+
                     obj.save(force_insert=True)
-                        
+
                 else:
                     obj.classe_rischio_pai = None
                     obj.stima_rischio_diretto_attuale = None
@@ -1873,10 +1899,10 @@ class InterventoAdmin(GeoModelAdmin):
                     obj.esproprio_val = None
                     obj.sostenibilita = None
                     obj.sostenibilita_val = None
-                    
+
                     #because this is the SALVA IN BOZZA button
                     obj.conclusione_istruttoria = False
-                    
+
                     obj.save(force_insert=True)
 
             else:
@@ -1885,7 +1911,7 @@ class InterventoAdmin(GeoModelAdmin):
                     obj.allegato_documento_preliminare = None
                     obj.conclusione_relazione_finale = None
                     obj.mesi_conclusione_relazione_finale = None
-                    
+
                     #because this is the SALVA IN BOZZA button
                     obj.conclusione_istruttoria = False
 
@@ -1894,8 +1920,8 @@ class InterventoAdmin(GeoModelAdmin):
                         obj.data_approvazione_progetto_preliminare = None
                         obj.riferimento_determina_approvazione_pp = None
                         obj.allegato_determina_approvazione_pp = None
-                        
-                    if obj.progetto_definitivo == False:                    
+
+                    if obj.progetto_definitivo == False:
                         obj.mesi_approvazione_progetto_definitivo = None
                         obj.data_approvazione_progetto_definitivo = None
                         obj.riferimento_determina_approvazione_pd = None
@@ -1913,13 +1939,13 @@ class InterventoAdmin(GeoModelAdmin):
                         obj.importo_opere_accessorie_strumentali = None
                         obj.desc_opere_acc_no_strum = None
                         obj.importo_opere_accessorie_no_strumentali = None
-                        
+
                     if obj.intervento_opere_mitigazione_compensazione == False or obj.intervento_opere_mitigazione_compensazione is None:
                         obj.desc_int_opere_mitig_comp = None
                         obj.importo_opere_mitig_comp = None
-                        
+
                     obj.save(force_update=True)
-                        
+
                 else:
                     obj.classe_rischio_pai = None
                     obj.stima_rischio_diretto_attuale = None
@@ -1971,11 +1997,11 @@ class InterventoAdmin(GeoModelAdmin):
                     obj.esproprio_val = None
                     obj.sostenibilita = None
                     obj.sostenibilita_val = None
-                    
+
                     obj.conclusione_istruttoria = False
-                    
-                    
+
+
                     obj.save(force_update=True)
 
-        
+
 admin.site.register(Intervento, InterventoAdmin)
